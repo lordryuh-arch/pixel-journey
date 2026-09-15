@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ChevronRight, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import heroAsset from "@/assets/idlemon-revo-hero.png.asset.json";
+import heroImage from "@/assets/idlemon-revo-hero.png";
 import forestMap from "@/assets/idlemon-map-forest.jpg";
 import volcanoMap from "@/assets/idlemon-map-volcano.jpg";
 import marketplace from "@/assets/idlemon-marketplace.jpg";
@@ -40,7 +40,7 @@ const navItems = [
 ] as const;
 
 const slides = [
-  { src: heroAsset.url, alt: "Heroes flying through the floating island world of IDLEMON REVO" },
+  { src: heroImage, alt: "Heroes flying through the floating island world of IDLEMON REVO" },
   { src: forestMap, alt: "Creatures exploring a sunlit forest ruin" },
   { src: volcanoMap, alt: "Creatures venturing through the ruby volcanic valley" },
 ];
