@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ChevronRight, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import heroAsset from "@/assets/idlemon-revo-hero.png.asset.json";
+import heroImage from "@/assets/idlemon-revo-hero.png";
 import forestMap from "@/assets/idlemon-map-forest.jpg";
 import volcanoMap from "@/assets/idlemon-map-volcano.jpg";
 import marketplace from "@/assets/idlemon-marketplace.jpg";
