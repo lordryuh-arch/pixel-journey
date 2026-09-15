@@ -40,7 +40,7 @@ const navItems = [
 ] as const;
 
 const slides = [
-  { src: heroAsset.url, alt: "Heroes flying through the floating island world of IDLEMON REVO" },
+  { src: heroImage, alt: "Heroes flying through the floating island world of IDLEMON REVO" },
   { src: forestMap, alt: "Creatures exploring a sunlit forest ruin" },
   { src: volcanoMap, alt: "Creatures venturing through the ruby volcanic valley" },
 ];
