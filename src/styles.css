@@ -88,6 +88,16 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
 @keyframes pixel-float { 0%,100% { transform: translateY(0); opacity: .45; } 50% { transform: translateY(-12px); opacity: .85; } }
 @utility pixel-float { animation: pixel-float 3.6s steps(4, end) infinite; }
 
+@keyframes hero-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@utility hero-banner {
+  animation: hero-breathe 9s ease-in-out infinite;
+  transform-origin: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

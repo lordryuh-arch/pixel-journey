@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, ChevronRight, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronRight, Menu, X } from "lucide-react";
+import { useState } from "react";
 
-import heroImage from "@/assets/idlemon-revo-hero.png";
-import forestMap from "@/assets/idlemon-map-forest.jpg";
-import volcanoMap from "@/assets/idlemon-map-volcano.jpg";
-import marketplace from "@/assets/idlemon-marketplace.jpg";
+import heroImage from "@/assets/idlemon-emerald-banner.png";
+import forestMap from "@/assets/idlemon-map-bone.png";
+import iceMap from "@/assets/idlemon-map-ice.png";
+import marketplace from "@/assets/idlemon-marketplace-banner.png";
 import gym from "@/assets/idlemon-gym.jpg";
 import handheld from "@/assets/idlemon-handheld.jpg";
 import { Button } from "@/components/ui/button";
@@ -39,12 +39,6 @@ const navItems = [
   ["Marketplace", "#marketplace"],
 ] as const;
 
-const slides = [
-  { src: heroImage, alt: "Heroes flying through the floating island world of IDLEMON REVO" },
-  { src: forestMap, alt: "Creatures exploring a sunlit forest ruin" },
-  { src: volcanoMap, alt: "Creatures venturing through the ruby volcanic valley" },
-];
-
 function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym"; className?: string }) {
   const paths = {
     energy: <><path d="M27 3 10 27h12l-3 18 17-25H24z" fill="currentColor"/><path d="M25 8 15 23h10l-2 12 9-13H21z" fill="var(--color-secondary)"/></>,
@@ -70,15 +64,7 @@ function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: 
 }
 
 function Index() {
-  const [slide, setSlide] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setSlide((value) => (value + 1) % slides.length), 6500);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const goTo = (index: number) => setSlide((index + slides.length) % slides.length);
 
   return (
     <main className="overflow-hidden bg-background">
@@ -95,22 +81,17 @@ function Index() {
       </header>
 
       <section id="home" className="relative pt-18">
-        <div className="relative h-[76vh] min-h-[590px] max-h-[860px] overflow-hidden bg-primary-ink">
-          {slides.map((item, index) => <img key={item.src} src={item.src} alt={item.alt} width={1280} height={720} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${index === slide ? "opacity-100" : "opacity-0"}`} />)}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-ink/90 via-primary-ink/25 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-10 mx-auto max-w-7xl px-5 pb-16 sm:px-8 sm:pb-20">
-            <p className="font-pixel text-[10px] text-secondary sm:text-xs">A NEW WORLD AWAITS</p>
-            <h1 className="mt-4 max-w-4xl font-pixel text-3xl leading-snug text-primary-foreground sm:text-5xl lg:text-6xl">IDLEMON REVO</h1>
-            <p className="mt-3 font-pixel text-base leading-relaxed text-primary-foreground sm:text-2xl">Your journey begins here.</p>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-primary-foreground/90 sm:text-lg">Explore maps, discover Pokémon of different rarities, manage your energy and build your own journey in a world inspired by the golden age of handheld RPGs.</p>
-            <div className="mt-7 flex flex-col items-start gap-4 sm:flex-row"><Button asChild variant="pixel" size="lg"><a href="#play">PLAY NOW <ChevronRight /></a></Button><Button asChild variant="pixelOutline" size="lg"><a href="#maps">EXPLORE THE WORLD</a></Button></div>
-          </div>
-          <div className="absolute bottom-6 right-5 z-20 flex items-center gap-2 sm:right-8">
-            <button type="button" aria-label="Previous scene" onClick={() => goTo(slide - 1)} className="grid size-10 place-items-center border-2 border-primary-foreground bg-primary-ink/70 text-primary-foreground transition-transform active:translate-y-1"><ArrowLeft /></button>
-            <span className="min-w-16 text-center font-pixel text-[9px] text-primary-foreground">{slide + 1} / {slides.length}</span>
-            <button type="button" aria-label="Next scene" onClick={() => goTo(slide + 1)} className="grid size-10 place-items-center border-2 border-primary-foreground bg-primary-ink/70 text-primary-foreground transition-transform active:translate-y-1"><ArrowRight /></button>
+        <div className="relative overflow-hidden bg-primary-ink">
+          <div className="hero-pan relative aspect-[3/2] w-full overflow-hidden bg-primary-ink">
+            <img src={heroImage} alt="IDLEMON REVO Emerald heroes flying across a world of floating islands" width={1536} height={1024} className="hero-banner h-full w-full object-contain" />
           </div>
           <span className="pixel-float absolute right-[12%] top-[18%] size-2 bg-secondary" /><span className="pixel-float absolute right-[18%] top-[28%] size-1.5 bg-primary" style={{ animationDelay: "1s" }} />
+        </div>
+        <div className="border-y-4 border-primary-ink bg-background px-5 py-12 sm:py-16">
+          <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div><p className="font-pixel text-[10px] text-primary sm:text-xs">A NEW WORLD AWAITS</p><h1 className="mt-4 font-pixel text-3xl leading-snug text-primary-ink sm:text-5xl">IDLEMON REVO</h1><p className="mt-3 font-pixel text-sm leading-relaxed text-primary sm:text-xl">Your journey begins here.</p><p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Explore maps, discover Pokémon of different rarities, manage your energy and build your own journey in a world inspired by the golden age of handheld RPGs.</p></div>
+            <div className="flex flex-col items-start gap-4 sm:flex-row lg:flex-col"><Button asChild variant="pixel" size="lg"><a href="#play">PLAY NOW <ChevronRight /></a></Button><Button asChild variant="pixelOutline" size="lg"><a href="#maps">EXPLORE THE WORLD</a></Button></div>
+          </div>
         </div>
       </section>
 
@@ -131,7 +112,7 @@ function Index() {
       <section id="maps" className="px-5 py-24 sm:py-32">
         <SectionHeading eyebrow="EXPLORE" title="EVERY MAP HIDES A POSSIBILITY" />
         <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
-          {[{src:forestMap,name:'VERDANT RUINS',energy:2},{src:volcanoMap,name:'RUBY VALLEY',energy:4}].map((map, i) => <article key={map.name} className="group overflow-hidden border-4 border-primary-ink bg-card shadow-pixel"><div className="overflow-hidden"><img src={map.src} alt={`${map.name} pixel-art map`} loading="lazy" width={1280} height={720} className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 p-5"><div className="min-w-0"><p className="font-pixel text-xs text-primary-ink sm:text-sm">{map.name}</p><div className="mt-3 flex gap-1">{Array.from({length:4},(_,j)=><span key={j} className={`h-2 w-8 ${j <= i ? 'bg-primary' : 'bg-muted'}`} />)}</div></div><div className="flex shrink-0 items-center gap-2 font-pixel text-[10px]"><PixelIcon kind="energy" className="size-6 text-primary" />{map.energy}</div></div></article>)}
+          {[{src:forestMap,name:'BONE FOREST',energy:2},{src:iceMap,name:'ICE FOREST',energy:4}].map((map, i) => <article key={map.name} className="group overflow-hidden border-4 border-primary-ink bg-card shadow-pixel"><div className="overflow-hidden"><img src={map.src} alt={`${map.name} pixel-art map`} loading="lazy" width={1536} height={1024} className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 p-5"><div className="min-w-0"><p className="font-pixel text-xs text-primary-ink sm:text-sm">{map.name}</p><div className="mt-3 flex gap-1">{Array.from({length:4},(_,j)=><span key={j} className={`h-2 w-8 ${j <= i ? 'bg-primary' : 'bg-muted'}`} />)}</div></div><div className="flex shrink-0 items-center gap-2 font-pixel text-[10px]"><PixelIcon kind="energy" className="size-6 text-primary" />{map.energy}</div></div></article>)}
         </div>
       </section>
 
@@ -142,7 +123,7 @@ function Index() {
         </div>
       </section>
 
-      <section id="marketplace" className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><div className="order-2 lg:order-1"><div className="mb-5 flex items-center gap-3 text-primary"><PixelIcon kind="market" className="size-12" /><span className="font-pixel text-[10px]">THE TRADING POST</span></div><h2 className="font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">THE IDLEMON MARKETPLACE</h2><p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">Trade and explore the evolving economy of the IDLEMON REVO universe.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#marketplace">EXPLORE MARKETPLACE <ChevronRight /></a></Button></div><img src={marketplace} alt="Bustling IDLEMON marketplace with tokens, eggs and adventure items" loading="lazy" width={1280} height={768} className="pixel-corners order-1 aspect-[5/4] w-full border-4 border-primary-ink object-cover shadow-pixel lg:order-2" /></div></section>
+      <section id="marketplace" className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><div className="order-2 lg:order-1"><div className="mb-5 flex items-center gap-3 text-primary"><PixelIcon kind="market" className="size-12" /><span className="font-pixel text-[10px]">THE TRADING POST</span></div><h2 className="font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">THE IDLEMON MARKETPLACE</h2><p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">Trade and explore the evolving economy of the IDLEMON REVO universe.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#marketplace">EXPLORE MARKETPLACE <ChevronRight /></a></Button></div><img src={marketplace} alt="IDLEMON REVO Emerald marketplace with trainers, creatures, items and crystals" loading="lazy" width={1536} height={1024} className="pixel-corners order-1 aspect-[3/2] w-full border-4 border-primary-ink object-cover shadow-pixel lg:order-2" /></div></section>
 
       <section id="gyms" className="bg-primary-ink px-5 py-24 text-primary-foreground sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><img src={gym} alt="Classic red-roofed IDLEMON gym" loading="lazy" width={1024} height={1024} className="pixel-corners mx-auto aspect-square w-full max-w-lg border-4 border-primary-foreground object-cover shadow-[8px_8px_0_var(--color-primary)]" /><div><div className="mb-5 flex items-center gap-3 text-secondary"><PixelIcon kind="gym" className="size-12" /><span className="font-pixel text-[10px]">NEXT CHALLENGE</span></div><h2 className="font-pixel text-2xl leading-relaxed sm:text-4xl">GYMS ARE WAITING</h2><p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/75">Prepare your team and face the challenges waiting throughout your journey.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#gyms">DISCOVER THE GYMS <ChevronRight /></a></Button></div></div></section>
 
