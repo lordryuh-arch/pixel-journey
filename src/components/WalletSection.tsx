@@ -4,16 +4,15 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
+import { LAUNCH_AT, readWallet, saveWallet, type Wallet } from "@/lib/wallet";
 
-const STORAGE_KEY = "idlemon-revo-wallet";
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-type Wallet = {
-  player: string;
-  wallet_id: string;
-  codes: string[];
-  created_at: string;
-};
+const RANKS = [
+  { id: "HARD", tag: "HARD", line: "I play every single night." },
+  { id: "SUPER HARD", tag: "SUPER HARD", line: "Sleep is optional, loot is not." },
+  { id: "MESTRE", tag: "MESTRE", line: "Born to catch them all." },
+] as const;
 
 function randomChunk(size: number) {
   const bytes = new Uint8Array(size);
@@ -21,43 +20,56 @@ function randomChunk(size: number) {
   return Array.from(bytes, (b) => ALPHABET[b % ALPHABET.length]).join("");
 }
 
-function makeCode() {
-  return `IDLM-${randomChunk(4)}-${randomChunk(4)}`;
-}
+const makeCode = () => `IDLM-${randomChunk(4)}-${randomChunk(4)}`;
 
 async function hash(value: string) {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+function useCountdown() {
+  const [left, setLeft] = useState(() => LAUNCH_AT.getTime() - Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setLeft(LAUNCH_AT.getTime() - Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const total = Math.max(0, Math.floor(left / 1000));
+  return {
+    live: left <= 0,
+    parts: [
+      ["DAYS", Math.floor(total / 86400)],
+      ["HRS", Math.floor((total % 86400) / 3600)],
+      ["MIN", Math.floor((total % 3600) / 60)],
+      ["SEC", total % 60],
+    ] as const,
+  };
+}
+
 export function WalletSection() {
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [player, setPlayer] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rank, setRank] = useState<string>("HARD");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const countdown = useCountdown();
 
-  useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
-        setWallet(JSON.parse(raw) as Wallet);
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    }
-  }, []);
+  useEffect(() => setWallet(readWallet()), []);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError("");
     if (player.trim().length < 3) return setError("Choose a trainer name with at least 3 characters.");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Enter a valid email address.");
     if (password.length < 4) return setError("Your password needs at least 4 characters.");
 
     setLoading(true);
     const created: Wallet = {
       player: player.trim(),
+      email: email.trim().toLowerCase(),
+      rank,
       wallet_id: `W-${randomChunk(6)}`,
       codes: Array.from({ length: 5 }, makeCode),
       created_at: new Date().toISOString(),
@@ -65,6 +77,8 @@ export function WalletSection() {
 
     const { error: dbError } = await supabase.from("wallets").insert({
       player_name: created.player,
+      email: created.email,
+      player_type: created.rank,
       password_hash: await hash(password),
       wallet_id: created.wallet_id,
       codes: created.codes,
@@ -76,14 +90,14 @@ export function WalletSection() {
       return;
     }
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(created));
+    saveWallet(created);
     setWallet(created);
   }
 
   function copyAll() {
     if (!wallet) return;
     void navigator.clipboard.writeText(
-      `IDLEMON REVO\nTrainer: ${wallet.player}\nWallet: ${wallet.wallet_id}\n${wallet.codes.join("\n")}`,
+      `IDLEMON REVO\nTrainer: ${wallet.player} (${wallet.rank})\nWallet: ${wallet.wallet_id}\n${wallet.codes.join("\n")}`,
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -97,9 +111,21 @@ export function WalletSection() {
           CLAIM YOUR 5 REWARD CODES
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Create your trainer wallet once and write down your five codes. They are generated a single
-          time — keep them safe.
+          The world opens tomorrow, September 22 at 8:00 PM. Create your wallet now, write down your
+          five codes and walk in ready.
         </p>
+
+        <div className="mx-auto mt-8 grid max-w-md grid-cols-4 gap-2">
+          {countdown.parts.map(([label, value]) => (
+            <div key={label} className="border-2 border-primary-ink bg-card py-3 shadow-pixel-sm">
+              <p className="font-pixel text-sm text-primary">{String(value).padStart(2, "0")}</p>
+              <p className="mt-2 font-pixel text-[8px] text-muted-foreground">{label}</p>
+            </div>
+          ))}
+        </div>
+        {countdown.live && (
+          <p className="mt-4 font-pixel text-[10px] text-primary">THE GATES ARE OPEN!</p>
+        )}
       </div>
 
       <div className="mx-auto mt-12 max-w-xl border-4 border-primary-ink bg-card p-6 shadow-pixel sm:p-8">
@@ -108,6 +134,7 @@ export function WalletSection() {
             <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-primary-ink pb-4">
               <div className="min-w-0">
                 <p className="font-pixel text-[10px] text-primary-ink">{wallet.player}</p>
+                <p className="mt-2 font-pixel text-[8px] text-primary">{wallet.rank}</p>
                 <p className="mt-2 text-xs text-muted-foreground">Wallet {wallet.wallet_id}</p>
               </div>
               <Button type="button" variant="pixelOutline" onClick={copyAll}>
@@ -144,6 +171,17 @@ export function WalletSection() {
               />
             </label>
             <label className="grid gap-2">
+              <span className="font-pixel text-[10px] text-primary-ink">EMAIL</span>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                maxLength={120}
+                placeholder="trainer@pallet.town"
+                className="h-12 rounded-none border-2 border-primary-ink bg-background"
+              />
+            </label>
+            <label className="grid gap-2">
               <span className="font-pixel text-[10px] text-primary-ink">PASSWORD</span>
               <Input
                 type="password"
@@ -154,6 +192,37 @@ export function WalletSection() {
                 className="h-12 rounded-none border-2 border-primary-ink bg-background"
               />
             </label>
+
+            <fieldset className="grid gap-3">
+              <legend className="font-pixel text-[10px] text-primary-ink">
+                WHAT KIND OF PLAYER ARE YOU?
+              </legend>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {RANKS.map((option) => {
+                  const active = rank === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => setRank(option.id)}
+                      className={`border-2 border-primary-ink px-3 py-4 text-left transition-transform ${
+                        active
+                          ? "bg-primary text-primary-foreground shadow-pixel-sm -translate-y-0.5"
+                          : "bg-background text-primary-ink hover:-translate-y-0.5"
+                      }`}
+                    >
+                      <span className="block font-pixel text-[9px] leading-relaxed">{option.tag}</span>
+                      <span
+                        className={`mt-2 block text-xs leading-5 ${active ? "text-primary-foreground/85" : "text-muted-foreground"}`}
+                      >
+                        {option.line}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+
             {error && <p className="text-sm font-semibold text-primary">{error}</p>}
             <Button type="submit" variant="pixel" size="lg" disabled={loading}>
               {loading ? <Loader2 className="animate-spin" /> : null}
