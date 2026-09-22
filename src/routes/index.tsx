@@ -9,6 +9,7 @@ import marketplace from "@/assets/idlemon-marketplace-banner.png";
 import gym from "@/assets/idlemon-gym.jpg";
 import handheld from "@/assets/idlemon-handheld.jpg";
 import { Button } from "@/components/ui/button";
+import { WalletSection } from "@/components/WalletSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ const navItems = [
   ["Economy", "#economy"],
   ["Gyms", "#gyms"],
   ["Marketplace", "#marketplace"],
+  ["Wallet", "#wallet"],
 ] as const;
 
 function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym"; className?: string }) {
@@ -128,6 +130,9 @@ function Index() {
       <section id="gyms" className="bg-primary-ink px-5 py-24 text-primary-foreground sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><img src={gym} alt="Classic red-roofed IDLEMON gym" loading="lazy" width={1024} height={1024} className="pixel-corners mx-auto aspect-square w-full max-w-lg border-4 border-primary-foreground object-cover shadow-[8px_8px_0_var(--color-primary)]" /><div><div className="mb-5 flex items-center gap-3 text-secondary"><PixelIcon kind="gym" className="size-12" /><span className="font-pixel text-[10px]">NEXT CHALLENGE</span></div><h2 className="font-pixel text-2xl leading-relaxed sm:text-4xl">GYMS ARE WAITING</h2><p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/75">Prepare your team and face the challenges waiting throughout your journey.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#gyms">DISCOVER THE GYMS <ChevronRight /></a></Button></div></div></section>
 
       <section className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2"><div><p className="font-pixel text-[10px] text-primary">A LOVE LETTER TO ADVENTURE</p><h2 className="mt-4 font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">MADE FOR THOSE WHO MISS THE CLASSICS</h2><p className="mt-6 whitespace-pre-line text-xl leading-9 text-muted-foreground">{"Pixel art. Exploration. Collection. Discovery.\nA simple journey inspired by the games that shaped a generation."}</p></div><img src={handheld} alt="Retro handheld device showing an IDLEMON forest encounter" loading="lazy" width={1024} height={1024} className="mx-auto w-full max-w-md mix-blend-multiply" /></div></section>
+
+      <WalletSection />
+
 
       <section id="play" className="relative border-y-4 border-primary-ink bg-primary px-5 py-24 text-center text-primary-foreground sm:py-32"><div className="pixel-grid absolute inset-0 opacity-15" /><div className="relative mx-auto max-w-4xl"><PixelIcon kind="egg" className="mx-auto size-16 text-secondary" /><h2 className="mt-7 font-pixel text-2xl leading-relaxed sm:text-5xl">YOUR JOURNEY STARTS NOW.</h2><p className="mt-5 text-xl font-semibold">Explore. Discover. Collect. Evolve.</p><Button asChild variant="pixelOutline" size="lg" className="mt-9"><a href="#home">PLAY IDLEMON REVO <ChevronRight /></a></Button></div></section>
 
