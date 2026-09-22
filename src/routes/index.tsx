@@ -9,6 +9,7 @@ import marketplace from "@/assets/idlemon-marketplace-banner.png";
 import gym from "@/assets/idlemon-gym.jpg";
 import handheld from "@/assets/idlemon-handheld.jpg";
 import { Button } from "@/components/ui/button";
+import { WalletSection } from "@/components/WalletSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ const navItems = [
   ["Economy", "#economy"],
   ["Gyms", "#gyms"],
   ["Marketplace", "#marketplace"],
+  ["Wallet", "#wallet"],
 ] as const;
 
 function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym"; className?: string }) {
