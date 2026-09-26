@@ -41,7 +41,10 @@ const navItems = [
   ["Wallet", "#wallet"],
 ] as const;
 
-function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym"; className?: string }) {
+const DISCORD_URL = "https://discord.gg/rexaPcDEEm";
+const WHATSAPP_URL = "https://chat.whatsapp.com/IOfCVtlVABE8gZtemGgwZ0?s=cl&p=a&ilr=4&iam=1";
+
+function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym" | "discord" | "whatsapp"; className?: string }) {
   const paths = {
     energy: <><path d="M27 3 10 27h12l-3 18 17-25H24z" fill="currentColor"/><path d="M25 8 15 23h10l-2 12 9-13H21z" fill="var(--color-secondary)"/></>,
     gold: <><rect x="9" y="9" width="30" height="30" fill="currentColor"/><rect x="5" y="15" width="38" height="18" fill="currentColor"/><rect x="13" y="13" width="22" height="22" fill="var(--color-secondary)"/><rect x="19" y="17" width="10" height="14" fill="currentColor"/></>,
@@ -51,8 +54,25 @@ function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crysta
     egg: <><path d="M24 3c12 0 19 20 19 31 0 9-8 12-19 12S5 43 5 34C5 23 12 3 24 3Z" fill="currentColor"/><path d="m14 25 6-5 6 6 7-6 6 7v8c0 5-6 7-15 7S9 40 9 35v-5z" fill="var(--color-background)"/></>,
     market: <><path d="M5 17h38v28H5z" fill="currentColor"/><path d="M2 10h44v11H2z" fill="var(--color-secondary)"/><path d="M6 6h36l4 12H2z" fill="currentColor"/><path d="M11 22h10v23H11zm16 5h10v9H27z" fill="var(--color-background)"/></>,
     gym: <><path d="m24 3 21 13v29H3V16z" fill="currentColor"/><path d="M8 19h32v22H8z" fill="var(--color-background)"/><path d="M19 26h10v15H19z" fill="currentColor"/><path d="m24 8 7 7H17z" fill="var(--color-secondary)"/></>,
+    discord: <><rect x="14" y="9" width="7" height="7" fill="currentColor"/><rect x="27" y="9" width="7" height="7" fill="currentColor"/><rect x="9" y="15" width="30" height="5" fill="currentColor"/><rect x="7" y="20" width="34" height="5" fill="currentColor"/><rect x="7" y="25" width="34" height="5" fill="currentColor"/><rect x="7" y="30" width="34" height="5" fill="currentColor"/><rect x="9" y="35" width="30" height="5" fill="currentColor"/><rect x="13" y="40" width="22" height="4" fill="currentColor"/><rect x="15" y="23" width="7" height="10" fill="var(--color-background)"/><rect x="26" y="23" width="7" height="10" fill="var(--color-background)"/></>,
+    whatsapp: <><rect x="14" y="5" width="20" height="5" fill="currentColor"/><rect x="10" y="10" width="28" height="5" fill="currentColor"/><rect x="6" y="15" width="36" height="5" fill="currentColor"/><rect x="6" y="20" width="36" height="5" fill="currentColor"/><rect x="6" y="25" width="36" height="5" fill="currentColor"/><rect x="6" y="30" width="36" height="5" fill="currentColor"/><rect x="10" y="35" width="28" height="5" fill="currentColor"/><rect x="14" y="40" width="20" height="4" fill="currentColor"/><rect x="11" y="44" width="8" height="3" fill="currentColor"/><rect x="16" y="15" width="8" height="8" fill="var(--color-background)"/><rect x="23" y="22" width="5" height="5" fill="var(--color-background)"/><rect x="26" y="26" width="8" height="8" fill="var(--color-background)"/></>,
   };
   return <svg viewBox="0 0 48 48" aria-hidden="true" className={`shrink-0 [shape-rendering:crispEdges] ${className}`}>{paths[kind]}</svg>;
+}
+
+function CommunityLink({ href, label, kind, className = "" }: { href: string; label: string; kind: "discord" | "whatsapp"; className?: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+      className={`grid size-10 shrink-0 place-items-center border-2 border-primary-ink bg-card text-primary-ink shadow-pixel-sm transition-transform hover:-translate-y-0.5 active:translate-y-0 ${className}`}
+    >
+      <PixelIcon kind={kind} className="size-6" />
+    </a>
+  );
 }
 
 function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: React.ReactNode }) {
@@ -75,11 +95,27 @@ function Index() {
           <a href="#home" className="min-w-0 font-pixel text-sm text-primary sm:text-base">IDLEMON <span className="text-primary-ink">REVO</span></a>
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
             {navItems.map(([label, href]) => <a key={href} href={href} className="text-sm font-semibold text-foreground transition-colors hover:text-primary">{label}</a>)}
+            <div className="flex items-center gap-2">
+              <CommunityLink href={DISCORD_URL} label="Join the IDLEMON REVO Discord" kind="discord" />
+              <CommunityLink href={WHATSAPP_URL} label="Join the IDLEMON REVO WhatsApp group" kind="whatsapp" />
+            </div>
             <Button asChild variant="pixel" size="lg"><a href="#play">PLAY NOW</a></Button>
           </nav>
           <button type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} className="grid size-10 place-items-center border-2 border-primary-ink text-primary-ink lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
         </div>
-        {menuOpen && <nav className="border-t-2 border-primary-ink bg-background px-5 py-5 lg:hidden" aria-label="Mobile navigation"><div className="grid gap-1">{navItems.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)} className="border-b border-border py-3 font-semibold">{label}</a>)}<Button asChild variant="pixel" className="mt-4"><a href="#play" onClick={() => setMenuOpen(false)}>PLAY NOW</a></Button></div></nav>}
+        {menuOpen && (
+          <nav className="border-t-2 border-primary-ink bg-background px-5 py-5 lg:hidden" aria-label="Mobile navigation">
+            <div className="grid gap-1">
+              {navItems.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)} className="border-b border-border py-3 font-semibold">{label}</a>)}
+              <div className="flex items-center gap-3 border-b border-border py-3">
+                <CommunityLink href={DISCORD_URL} label="Join the IDLEMON REVO Discord" kind="discord" />
+                <CommunityLink href={WHATSAPP_URL} label="Join the IDLEMON REVO WhatsApp group" kind="whatsapp" />
+                <span className="text-sm text-muted-foreground">Talk with other trainers</span>
+              </div>
+              <Button asChild variant="pixel" className="mt-4"><a href="#play" onClick={() => setMenuOpen(false)}>PLAY NOW</a></Button>
+            </div>
+          </nav>
+        )}
       </header>
 
       <section id="home" className="relative pt-18">
@@ -134,9 +170,9 @@ function Index() {
       <WalletSection />
 
 
-      <section id="play" className="relative border-y-4 border-primary-ink bg-primary px-5 py-24 text-center text-primary-foreground sm:py-32"><div className="pixel-grid absolute inset-0 opacity-15" /><div className="relative mx-auto max-w-4xl"><PixelIcon kind="egg" className="mx-auto size-16 text-secondary" /><h2 className="mt-7 font-pixel text-2xl leading-relaxed sm:text-5xl">YOUR JOURNEY STARTS NOW.</h2><p className="mt-5 text-xl font-semibold">Explore. Discover. Collect. Evolve.</p><Button asChild variant="pixelOutline" size="lg" className="mt-9"><a href="#home">PLAY IDLEMON REVO <ChevronRight /></a></Button></div></section>
+      <section id="play" className="relative border-y-4 border-primary-ink bg-primary px-5 py-24 text-center text-primary-foreground sm:py-32"><div className="pixel-grid absolute inset-0 opacity-15" /><div className="relative mx-auto max-w-4xl"><PixelIcon kind="egg" className="mx-auto size-16 text-secondary" /><h2 className="mt-7 font-pixel text-2xl leading-relaxed sm:text-5xl">YOUR JOURNEY STARTS NOW.</h2><p className="mt-5 text-xl font-semibold">Explore. Discover. Collect. Evolve.</p><Button asChild variant="pixelOutline" size="lg" className="mt-9"><a href="#home">PLAY IDLEMON REVO <ChevronRight /></a></Button><p className="mt-12 font-pixel text-[10px] uppercase text-primary-foreground/85">Or travel with the community</p><div className="mt-5 flex flex-col items-center justify-center gap-4 sm:flex-row"><Button asChild variant="pixelOutline" size="lg"><a href={DISCORD_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="discord" className="size-6 text-primary" /> JOIN DISCORD</a></Button><Button asChild variant="pixelOutline" size="lg"><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="whatsapp" className="size-6 text-primary" /> WHATSAPP GROUP</a></Button></div></div></section>
 
-      <footer className="bg-primary-ink px-5 py-12 text-primary-foreground"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-center"><div><p className="font-pixel text-sm">IDLEMON <span className="text-secondary">REVO</span></p><p className="mt-3 text-sm text-primary-foreground/60">A journey built in pixels.</p></div><nav className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold" aria-label="Footer navigation">{[['The Game','#game'],['Maps','#maps'],['Rarities','#rarities'],['Marketplace','#marketplace'],['Gyms','#gyms'],['Community','#play']].map(([label,href])=><a key={href} href={href} className="transition-colors hover:text-secondary">{label}</a>)}</nav></div></footer>
+      <footer className="bg-primary-ink px-5 py-12 text-primary-foreground"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-center"><div><p className="font-pixel text-sm">IDLEMON <span className="text-secondary">REVO</span></p><p className="mt-3 text-sm text-primary-foreground/60">A journey built in pixels.</p></div><nav className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold" aria-label="Footer navigation">{[['The Game','#game'],['Maps','#maps'],['Rarities','#rarities'],['Marketplace','#marketplace'],['Gyms','#gyms']].map(([label,href])=><a key={href} href={href} className="transition-colors hover:text-secondary">{label}</a>)}<a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="discord" className="size-5 text-secondary" /> Discord</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="whatsapp" className="size-5 text-secondary" /> WhatsApp</a></nav></div></footer>
     </main>
   );
 }
