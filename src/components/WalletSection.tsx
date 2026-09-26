@@ -1,7 +1,7 @@
 import { Check, Copy, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import esmeralda from "@/assets/idlemon-esmeralda.jpg";
+import device from "@/assets/idlemon-console.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LAUNCH_AT, readWallet, saveWallet, type Wallet } from "@/lib/wallet";
@@ -84,12 +84,12 @@ export function WalletSection() {
   return (
     <section id="wallet" className="border-y-4 border-primary-ink bg-accent/30 px-5 py-24 sm:py-32">
       <img
-        src={esmeralda}
-        alt="IDLEMON REVO Emerald pre-registration artwork: a trainer with a dragon companion beside a glowing emerald egg"
+        src={device}
+        alt="Pixel-art handheld console showing an IDLEMON forest encounter"
         loading="lazy"
-        width={1280}
-        height={647}
-        className="pixel-corners mx-auto mb-12 w-full max-w-3xl border-4 border-primary-ink object-cover shadow-pixel"
+        width={1024}
+        height={1024}
+        className="mx-auto mb-10 w-full max-w-sm mix-blend-multiply"
       />
       <div className="mx-auto max-w-3xl text-center">
         <p className="font-pixel text-[10px] uppercase text-primary sm:text-xs">TRAINER WALLET</p>
