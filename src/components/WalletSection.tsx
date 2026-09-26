@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase";
 import { LAUNCH_AT, readWallet, saveWallet, type Wallet } from "@/lib/wallet";
 
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -22,11 +21,6 @@ function randomChunk(size: number) {
 
 const makeCode = () => `IDLM-${randomChunk(4)}-${randomChunk(4)}`;
 
-async function hash(value: string) {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
-}
-
 function useCountdown() {
   const [left, setLeft] = useState(() => LAUNCH_AT.getTime() - Date.now());
   useEffect(() => {
@@ -37,8 +31,7 @@ function useCountdown() {
   return {
     live: left <= 0,
     parts: [
-      ["DAYS", Math.floor(total / 86400)],
-      ["HRS", Math.floor((total % 86400) / 3600)],
+            ["HRS", Math.floor((total % 86400) / 3600)],
       ["MIN", Math.floor((total % 3600) / 60)],
       ["SEC", total % 60],
     ] as const,
@@ -47,9 +40,7 @@ function useCountdown() {
 
 export function WalletSection() {
   const [wallet, setWallet] = useState<Wallet | null>(null);
-  const [player, setPlayer] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [rank, setRank] = useState<string>("HARD");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -61,13 +52,11 @@ export function WalletSection() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError("");
-    if (player.trim().length < 3) return setError("Choose a trainer name with at least 3 characters.");
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Enter a valid email address.");
-    if (password.length < 4) return setError("Your password needs at least 4 characters.");
 
     setLoading(true);
     const created: Wallet = {
-      player: player.trim(),
+      player: email.trim().split("@")[0],
       email: email.trim().toLowerCase(),
       rank,
       wallet_id: `W-${randomChunk(6)}`,
@@ -75,20 +64,7 @@ export function WalletSection() {
       created_at: new Date().toISOString(),
     };
 
-    const { error: dbError } = await supabase.from("wallets").insert({
-      player_name: created.player,
-      email: created.email,
-      player_type: created.rank,
-      password_hash: await hash(password),
-      wallet_id: created.wallet_id,
-      codes: created.codes,
-    });
     setLoading(false);
-
-    if (dbError) {
-      setError("We couldn't create your wallet right now. Please try again.");
-      return;
-    }
 
     saveWallet(created);
     setWallet(created);
@@ -111,11 +87,11 @@ export function WalletSection() {
           CLAIM YOUR 5 REWARD CODES
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-          The world opens tomorrow, September 22 at 8:00 PM. Create your wallet now, write down your
-          five codes and walk in ready.
+          Pre-registration closes today, September 26 at 11:00 PM. Enter your Gmail, unlock your
+          five codes and write them down.
         </p>
 
-        <div className="mx-auto mt-8 grid max-w-md grid-cols-4 gap-2">
+        <div className="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-2">
           {countdown.parts.map(([label, value]) => (
             <div key={label} className="border-2 border-primary-ink bg-card py-3 shadow-pixel-sm">
               <p className="font-pixel text-sm text-primary">{String(value).padStart(2, "0")}</p>
@@ -124,7 +100,7 @@ export function WalletSection() {
           ))}
         </div>
         {countdown.live && (
-          <p className="mt-4 font-pixel text-[10px] text-primary">THE GATES ARE OPEN!</p>
+          <p className="mt-4 font-pixel text-[10px] text-primary">PRE-REGISTRATION CLOSED</p>
         )}
       </div>
 
@@ -161,34 +137,13 @@ export function WalletSection() {
         ) : (
           <form onSubmit={handleSubmit} className="grid gap-5">
             <label className="grid gap-2">
-              <span className="font-pixel text-[10px] text-primary-ink">TRAINER NAME</span>
-              <Input
-                value={player}
-                onChange={(e) => setPlayer(e.target.value)}
-                maxLength={24}
-                placeholder="Red"
-                className="h-12 rounded-none border-2 border-primary-ink bg-background"
-              />
-            </label>
-            <label className="grid gap-2">
-              <span className="font-pixel text-[10px] text-primary-ink">EMAIL</span>
+              <span className="font-pixel text-[10px] text-primary-ink">GMAIL</span>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={120}
-                placeholder="trainer@pallet.town"
-                className="h-12 rounded-none border-2 border-primary-ink bg-background"
-              />
-            </label>
-            <label className="grid gap-2">
-              <span className="font-pixel text-[10px] text-primary-ink">PASSWORD</span>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                maxLength={64}
-                placeholder="••••••"
+                placeholder="trainer@gmail.com"
                 className="h-12 rounded-none border-2 border-primary-ink bg-background"
               />
             </label>
@@ -224,9 +179,9 @@ export function WalletSection() {
             </fieldset>
 
             {error && <p className="text-sm font-semibold text-primary">{error}</p>}
-            <Button type="submit" variant="pixel" size="lg" disabled={loading}>
+            <Button type="submit" variant="pixel" size="lg" disabled={loading || countdown.live}>
               {loading ? <Loader2 className="animate-spin" /> : null}
-              {loading ? "CREATING..." : "CREATE MY WALLET"}
+              {loading ? "CREATING..." : "UNLOCK MY CODES"}
             </Button>
           </form>
         )}
