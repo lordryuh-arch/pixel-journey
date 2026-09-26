@@ -22,14 +22,15 @@ function randomChunk(size: number) {
 const makeCode = () => `IDLM-${randomChunk(4)}-${randomChunk(4)}`;
 
 function useCountdown() {
-  const [left, setLeft] = useState(() => LAUNCH_AT.getTime() - Date.now());
+  const [left, setLeft] = useState<number | null>(null);
   useEffect(() => {
+    setLeft(LAUNCH_AT.getTime() - Date.now());
     const id = setInterval(() => setLeft(LAUNCH_AT.getTime() - Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
-  const total = Math.max(0, Math.floor(left / 1000));
+  const total = Math.max(0, Math.floor((left ?? 0) / 1000));
   return {
-    live: left <= 0,
+    live: left !== null && left <= 0,
     parts: [
             ["HRS", Math.floor((total % 86400) / 3600)],
       ["MIN", Math.floor((total % 3600) / 60)],
