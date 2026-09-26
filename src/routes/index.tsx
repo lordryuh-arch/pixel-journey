@@ -7,7 +7,7 @@ import forestMap from "@/assets/idlemon-map-bone.png";
 import iceMap from "@/assets/idlemon-map-ice.png";
 import marketplace from "@/assets/idlemon-marketplace-banner.png";
 import gym from "@/assets/idlemon-gym.jpg";
-import classics from "@/assets/idlemon-classics.png";
+import esmeralda from "@/assets/idlemon-esmeralda.jpg";
 import { Button } from "@/components/ui/button";
 import { WalletSection } from "@/components/WalletSection";
 
@@ -165,7 +165,7 @@ function Index() {
 
       <section id="gyms" className="bg-primary-ink px-5 py-24 text-primary-foreground sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><img src={gym} alt="Classic red-roofed IDLEMON gym" loading="lazy" width={1024} height={1024} className="pixel-corners mx-auto aspect-square w-full max-w-lg border-4 border-primary-foreground object-cover shadow-[8px_8px_0_var(--color-primary)]" /><div><div className="mb-5 flex items-center gap-3 text-secondary"><PixelIcon kind="gym" className="size-12" /><span className="font-pixel text-[10px]">NEXT CHALLENGE</span></div><h2 className="font-pixel text-2xl leading-relaxed sm:text-4xl">GYMS ARE WAITING</h2><p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/75">Prepare your team and face the challenges waiting throughout your journey.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#gyms">DISCOVER THE GYMS <ChevronRight /></a></Button></div></div></section>
 
-      <section className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2"><div><p className="font-pixel text-[10px] text-primary">A LOVE LETTER TO ADVENTURE</p><h2 className="mt-4 font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">MADE FOR THOSE WHO MISS THE CLASSICS</h2><p className="mt-6 whitespace-pre-line text-xl leading-9 text-muted-foreground">{"Pixel art. Exploration. Collection. Discovery.\nA simple journey inspired by the games that shaped a generation."}</p></div><img src={classics} alt="Pixel-art handheld console showing an IDLEMON forest encounter" loading="lazy" width={1024} height={1024} className="mx-auto w-full max-w-md" /></div></section>
+      <section className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2"><div><p className="font-pixel text-[10px] text-primary">A LOVE LETTER TO ADVENTURE</p><h2 className="mt-4 font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">MADE FOR THOSE WHO MISS THE CLASSICS</h2><p className="mt-6 whitespace-pre-line text-xl leading-9 text-muted-foreground">{"Pixel art. Exploration. Collection. Discovery.\nA simple journey inspired by the games that shaped a generation."}</p></div><img src={esmeralda} alt="IDLEMON REVO Emerald artwork: a trainer with a dragon companion beside a glowing emerald egg" loading="lazy" width={1280} height={647} className="pixel-corners mx-auto w-full max-w-xl border-4 border-primary-ink shadow-pixel" /></div></section>
 
       <WalletSection />
 
