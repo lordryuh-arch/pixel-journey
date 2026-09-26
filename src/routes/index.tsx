@@ -41,7 +41,10 @@ const navItems = [
   ["Wallet", "#wallet"],
 ] as const;
 
-function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym"; className?: string }) {
+const DISCORD_URL = "https://discord.gg/rexaPcDEEm";
+const WHATSAPP_URL = "https://chat.whatsapp.com/IOfCVtlVABE8gZtemGgwZ0?s=cl&p=a&ilr=4&iam=1";
+
+function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crystal" | "emerald" | "ruby" | "egg" | "market" | "gym" | "discord" | "whatsapp"; className?: string }) {
   const paths = {
     energy: <><path d="M27 3 10 27h12l-3 18 17-25H24z" fill="currentColor"/><path d="M25 8 15 23h10l-2 12 9-13H21z" fill="var(--color-secondary)"/></>,
     gold: <><rect x="9" y="9" width="30" height="30" fill="currentColor"/><rect x="5" y="15" width="38" height="18" fill="currentColor"/><rect x="13" y="13" width="22" height="22" fill="var(--color-secondary)"/><rect x="19" y="17" width="10" height="14" fill="currentColor"/></>,
@@ -51,8 +54,25 @@ function PixelIcon({ kind, className = "" }: { kind: "energy" | "gold" | "crysta
     egg: <><path d="M24 3c12 0 19 20 19 31 0 9-8 12-19 12S5 43 5 34C5 23 12 3 24 3Z" fill="currentColor"/><path d="m14 25 6-5 6 6 7-6 6 7v8c0 5-6 7-15 7S9 40 9 35v-5z" fill="var(--color-background)"/></>,
     market: <><path d="M5 17h38v28H5z" fill="currentColor"/><path d="M2 10h44v11H2z" fill="var(--color-secondary)"/><path d="M6 6h36l4 12H2z" fill="currentColor"/><path d="M11 22h10v23H11zm16 5h10v9H27z" fill="var(--color-background)"/></>,
     gym: <><path d="m24 3 21 13v29H3V16z" fill="currentColor"/><path d="M8 19h32v22H8z" fill="var(--color-background)"/><path d="M19 26h10v15H19z" fill="currentColor"/><path d="m24 8 7 7H17z" fill="var(--color-secondary)"/></>,
+    discord: <><rect x="14" y="9" width="7" height="7" fill="currentColor"/><rect x="27" y="9" width="7" height="7" fill="currentColor"/><rect x="9" y="15" width="30" height="5" fill="currentColor"/><rect x="7" y="20" width="34" height="5" fill="currentColor"/><rect x="7" y="25" width="34" height="5" fill="currentColor"/><rect x="7" y="30" width="34" height="5" fill="currentColor"/><rect x="9" y="35" width="30" height="5" fill="currentColor"/><rect x="13" y="40" width="22" height="4" fill="currentColor"/><rect x="15" y="23" width="7" height="10" fill="var(--color-background)"/><rect x="26" y="23" width="7" height="10" fill="var(--color-background)"/></>,
+    whatsapp: <><rect x="14" y="5" width="20" height="5" fill="currentColor"/><rect x="10" y="10" width="28" height="5" fill="currentColor"/><rect x="6" y="15" width="36" height="5" fill="currentColor"/><rect x="6" y="20" width="36" height="5" fill="currentColor"/><rect x="6" y="25" width="36" height="5" fill="currentColor"/><rect x="6" y="30" width="36" height="5" fill="currentColor"/><rect x="10" y="35" width="28" height="5" fill="currentColor"/><rect x="14" y="40" width="20" height="4" fill="currentColor"/><rect x="11" y="44" width="8" height="3" fill="currentColor"/><rect x="16" y="15" width="8" height="8" fill="var(--color-background)"/><rect x="23" y="22" width="5" height="5" fill="var(--color-background)"/><rect x="26" y="26" width="8" height="8" fill="var(--color-background)"/></>,
   };
   return <svg viewBox="0 0 48 48" aria-hidden="true" className={`shrink-0 [shape-rendering:crispEdges] ${className}`}>{paths[kind]}</svg>;
+}
+
+function CommunityLink({ href, label, kind, className = "" }: { href: string; label: string; kind: "discord" | "whatsapp"; className?: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+      className={`grid size-10 shrink-0 place-items-center border-2 border-primary-ink bg-card text-primary-ink shadow-pixel-sm transition-transform hover:-translate-y-0.5 active:translate-y-0 ${className}`}
+    >
+      <PixelIcon kind={kind} className="size-6" />
+    </a>
+  );
 }
 
 function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: string; children?: React.ReactNode }) {
