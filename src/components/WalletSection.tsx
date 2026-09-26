@@ -1,7 +1,6 @@
 import { Check, Copy, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import device from "@/assets/idlemon-console.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LAUNCH_AT, readWallet, saveWallet, type Wallet } from "@/lib/wallet";
@@ -83,14 +82,6 @@ export function WalletSection() {
 
   return (
     <section id="wallet" className="border-y-4 border-primary-ink bg-accent/30 px-5 py-24 sm:py-32">
-      <img
-        src={device}
-        alt="Pixel-art handheld console showing an IDLEMON forest encounter"
-        loading="lazy"
-        width={1024}
-        height={1024}
-        className="mx-auto mb-10 w-full max-w-sm mix-blend-multiply"
-      />
       <div className="mx-auto max-w-3xl text-center">
         <p className="font-pixel text-[10px] uppercase text-primary sm:text-xs">TRAINER WALLET</p>
         <h2 className="mt-4 font-pixel text-xl leading-relaxed text-primary-ink sm:text-3xl">
