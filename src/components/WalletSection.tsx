@@ -56,7 +56,7 @@ export function WalletSection() {
 
     setLoading(true);
     const created: Wallet = {
-      player: email.trim().split("@")[0],
+      player: email.trim().split("@")[0] ?? "Trainer",
       email: email.trim().toLowerCase(),
       rank,
       wallet_id: `W-${randomChunk(6)}`,
