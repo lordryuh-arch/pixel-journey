@@ -88,8 +88,8 @@ export function WalletSection() {
           CLAIM YOUR 5 REWARD CODES
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Pre-registration closes today, September 26 at 11:00 PM. Enter your Gmail, unlock your
-          five codes and write them down.
+          Pre-registration closes October 4 at 11:00 PM. Enter your Gmail, unlock your five codes
+          and write them down.
         </p>
 
         <div className="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-2">

@@ -46,4 +46,4 @@ export function useWallet() {
   return wallet;
 }
 
-export const LAUNCH_AT = new Date("2026-09-26T23:00:00-03:00");
+export const LAUNCH_AT = new Date("2026-10-04T23:00:00-03:00");
