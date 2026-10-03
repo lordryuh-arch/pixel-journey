@@ -32,7 +32,7 @@ function useCountdown() {
   return {
     live: left !== null && left <= 0,
     parts: [
-            ["HRS", Math.floor((total % 86400) / 3600)],
+      ["HRS", Math.floor(total / 3600)],
       ["MIN", Math.floor((total % 3600) / 60)],
       ["SEC", total % 60],
     ] as const,
