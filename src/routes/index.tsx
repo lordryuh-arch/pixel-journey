@@ -39,6 +39,7 @@ const navItems = [
   ["Gyms", "#gyms"],
   ["Marketplace", "#marketplace"],
   ["Wallet", "#wallet"],
+  ["Wiki", "/wiki"],
 ] as const;
 
 const DISCORD_URL = "https://discord.gg/rexaPcDEEm";
