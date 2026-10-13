@@ -98,6 +98,9 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   transform-origin: center;
 }
 
+@keyframes mythic-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+@utility mythic-veins { animation: mythic-pulse 2.4s steps(3, end) infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
