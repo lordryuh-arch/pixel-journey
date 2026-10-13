@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/wiki")({
   head: () => ({
@@ -23,13 +24,163 @@ export const Route = createFileRoute("/wiki")({
   component: Wiki,
 });
 
+/* ---------------------------------- pixel balls --------------------------------- */
+
+type BallPalette = {
+  top: string;
+  bottom: string;
+  button: string;
+  ink: string;
+  shine: string;
+  veins?: Array<[number, number, string]>;
+};
+
+// 16x16 pixel sprite. o = outline, t = top half, b = bottom half, c = button core, w = shine
+const BALL_PIXELS = [
+  ".....oooooo.....",
+  "...ottttttttoo...",
+  "..owwttttttttoo..",
+  ".owttttttttttto.",
+  ".ottttttttttttto",
+  "otttttttttttttto",
+  "otttttooooottttto",
+  "oooooooccooooooo",
+  "oooooooccooooooo",
+  "obbbbboooobbbbbo",
+  "obbbbbbbbbbbbbbo",
+  ".obbbbbbbbbbbbo.",
+  ".obbbbbbbbbbbbo.",
+  "..obbbbbbbbbbo..",
+  "...obbbbbbbbo...",
+  ".....oooooo.....",
+];
+
+const BALL_PALETTES: Record<string, BallPalette> = {
+  poke: { top: "#E14B3B", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#2A1A18", shine: "#F58A72" },
+  great: { top: "#3C6BE0", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#18203A", shine: "#7FA0F5" },
+  ultra: { top: "#F2B733", bottom: "#4A3F78", button: "#FFE9A8", ink: "#241C38", shine: "#FFD873" },
+  crystal: { top: "#63CFE0", bottom: "#2E7F9B", button: "#EAFBFF", ink: "#123241", shine: "#B7EEF7" },
+  master: { top: "#7B4BE0", bottom: "#F6F1E4", button: "#FFD34D", ink: "#241840", shine: "#B793FF" },
+  mythic: {
+    top: "#2A2136",
+    bottom: "#120D1A",
+    button: "#FFC94D",
+    ink: "#080610",
+    shine: "#4C3A66",
+    veins: [
+      [2, 10, "#FFC94D"],
+      [3, 12, "#A96BFF"],
+      [4, 7, "#FFC94D"],
+      [4, 13, "#A96BFF"],
+      [5, 3, "#A96BFF"],
+      [5, 11, "#FFC94D"],
+      [10, 5, "#FFC94D"],
+      [11, 9, "#A96BFF"],
+      [12, 3, "#A96BFF"],
+      [12, 12, "#FFC94D"],
+      [13, 7, "#A96BFF"],
+      [14, 10, "#FFC94D"],
+    ],
+  },
+};
+
+function PixelBall({
+  palette,
+  size = 28,
+  label,
+  className,
+}: {
+  palette: BallPalette;
+  size?: number;
+  label: string;
+  className?: string;
+}) {
+  const cells: React.ReactNode[] = [];
+  BALL_PIXELS.forEach((row, y) => {
+    row.split("").forEach((ch, x) => {
+      if (ch === ".") return;
+      const fill =
+        ch === "o"
+          ? palette.ink
+          : ch === "t"
+            ? palette.top
+            : ch === "b"
+              ? palette.bottom
+              : ch === "c"
+                ? palette.button
+                : palette.shine;
+      cells.push(<rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={fill} />);
+    });
+  });
+
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      width={size}
+      height={size}
+      shapeRendering="crispEdges"
+      role="img"
+      aria-label={label}
+      className={cn("shrink-0", className)}
+      style={{ filter: "drop-shadow(2px 2px 0 var(--color-primary-ink))" }}
+    >
+      {cells}
+      {palette.veins?.map(([y, x, color], i) => (
+        <rect key={`v${i}`} x={x} y={y} width={1} height={1} fill={color} className="mythic-veins" />
+      ))}
+    </svg>
+  );
+}
+
 const ballRows = [
-  ["1", "Poké Ball", "1.0×", "The base. No modifiers.", "Shop / starter"],
-  ["2", "Great Ball", "1.5×", "Reduces the high-HP penalty.", "Shop"],
-  ["3", "Ultra Ball", "2.0×", "Ignores the altered-status penalty.", "Advanced shop"],
-  ["4", "Crystal Ball", "3.0×", "5.0× against Crystal/Rock types. Forged from mined crystals.", "Mining (Minecara)"],
-  ["5", "Master Ball", "∞", "Guaranteed capture — but inert against Ancestrals and Mythic Blacks.", "One-time event / achievement"],
-  ["6", "MYTHIC BLACK", "8.0×", "The absolute apex. Ignores immunities, prevents fleeing and is the only ball that can register an Ancestral.", "Off-the-curve rarity"],
+  {
+    n: "1",
+    name: "Poké Ball",
+    mult: "1.0×",
+    note: "The base. No modifiers.",
+    get: "Shop / starter",
+    palette: BALL_PALETTES.poke,
+  },
+  {
+    n: "2",
+    name: "Great Ball",
+    mult: "1.5×",
+    note: "Reduces the high-HP penalty.",
+    get: "Shop",
+    palette: BALL_PALETTES.great,
+  },
+  {
+    n: "3",
+    name: "Ultra Ball",
+    mult: "2.0×",
+    note: "Ignores the altered-status penalty.",
+    get: "Advanced shop",
+    palette: BALL_PALETTES.ultra,
+  },
+  {
+    n: "4",
+    name: "Crystal Ball",
+    mult: "3.0×",
+    note: "5.0× against Crystal/Rock types. Forged from mined crystals.",
+    get: "Mining (Minecara)",
+    palette: BALL_PALETTES.crystal,
+  },
+  {
+    n: "5",
+    name: "Master Ball",
+    mult: "∞",
+    note: "Guaranteed capture — but inert against Ancestrals and Mythic Blacks.",
+    get: "One-time event / achievement",
+    palette: BALL_PALETTES.master,
+  },
+  {
+    n: "6",
+    name: "MYTHIC BLACK",
+    mult: "8.0×",
+    note: "The absolute apex. Ignores immunities, prevents fleeing and is the only ball that can register an Ancestral.",
+    get: "Off-the-curve rarity",
+    palette: BALL_PALETTES.mythic,
+  },
 ];
 
 const miningRows = [
@@ -99,12 +250,56 @@ function PixelTable({ head, rows }: { head: string[]; rows: string[][] }) {
   );
 }
 
+function BallTable() {
+  return (
+    <div className="overflow-x-auto border-4 border-primary-ink bg-background shadow-pixel">
+      <table className="w-full min-w-[640px] text-left text-sm">
+        <thead>
+          <tr className="border-b-4 border-primary-ink bg-primary-ink">
+            {["Ball", "Multiplier", "Special Note", "How to Get"].map((h) => (
+              <th key={h} className="px-4 py-3 font-pixel text-[10px] text-primary-foreground">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {ballRows.map((row) => (
+            <tr key={row.n} className="group border-b-2 border-primary-ink/10 last:border-0">
+              <td className="px-4 py-3 align-top">
+                <div className="flex items-center gap-3">
+                  <PixelBall
+                    palette={row.palette}
+                    size={32}
+                    label={`${row.name} icon`}
+                    className="transition-transform duration-200 group-hover:-translate-y-1"
+                  />
+                  <div>
+                    <p className="font-pixel text-[10px] leading-relaxed text-primary-ink">{row.name}</p>
+                    <p className="mt-1 font-pixel text-[8px] text-primary-ink/40">TIER {row.n}</p>
+                  </div>
+                </div>
+              </td>
+              <td className="px-4 py-3 align-top font-pixel text-[10px] text-primary">{row.mult}</td>
+              <td className="px-4 py-3 align-top text-primary-ink/80">{row.note}</td>
+              <td className="px-4 py-3 align-top text-primary-ink/60">{row.get}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function Wiki() {
   return (
     <div className="min-h-screen bg-background text-primary-ink">
       <header className="sticky top-0 z-40 border-b-4 border-primary-ink bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-          <Link to="/" className="font-pixel text-sm text-primary">IDLEMON REVO</Link>
+          <Link to="/" className="flex items-center gap-2 font-pixel text-sm text-primary">
+            <PixelBall palette={BALL_PALETTES.poke} size={18} label="IDLEMON REVO" />
+            IDLEMON REVO
+          </Link>
           <Link
             to="/"
             className="inline-flex items-center gap-2 border-2 border-primary-ink px-3 py-2 font-pixel text-[10px] text-primary-ink shadow-pixel-sm transition-transform hover:-translate-y-0.5 active:translate-y-0"
@@ -120,6 +315,17 @@ function Wiki() {
         <p className="mb-4 max-w-2xl text-primary-ink/70">
           Patch 1.0+ — contains post-game and legendary-rarity spoilers. Read on only if you are ready to know how the top of the world works.
         </p>
+        <div className="mb-10 flex flex-wrap items-center gap-5 border-4 border-primary-ink/15 p-5">
+          {ballRows.map((row) => (
+            <PixelBall
+              key={row.n}
+              palette={row.palette}
+              size={34}
+              label={row.name}
+              className="transition-transform duration-200 hover:-translate-y-1"
+            />
+          ))}
+        </div>
         <nav className="mb-14 flex flex-wrap gap-2">
           {[
             ["Balls", "#balls"],
@@ -144,7 +350,7 @@ function Wiki() {
           <p className="mb-6 border-l-4 border-secondary pl-4 text-primary-ink/80">
             Golden rule: the rarer the creature, the more your ball choice matters — and past a certain point, <strong>only one ball works</strong>.
           </p>
-          <PixelTable head={["#", "Ball", "Multiplier", "Special Note", "How to Get"]} rows={ballRows} />
+          <BallTable />
           <p className="mt-4 text-sm italic text-primary-ink/60">
             Lore note: the Mythic Black is not an evolution of the Master Ball — it is a correction. The Master Ball forces the capture; the Mythic Black grants permission.
           </p>
@@ -152,10 +358,13 @@ function Wiki() {
 
         <section id="mythic-black" className="mb-16 scroll-mt-24">
           <SectionTitle index="02">THE MYTHIC BLACK BALL</SectionTitle>
-          <blockquote className="mb-6 border-4 border-primary-ink bg-primary-ink p-6 font-pixel text-[10px] leading-relaxed text-primary-foreground shadow-pixel">
-            "It does not imprison. It summons."
-            <span className="mt-2 block text-secondary">— Inscription found in the Ruins of Minecara</span>
-          </blockquote>
+          <div className="mb-6 flex flex-col items-center gap-5 border-4 border-primary-ink bg-primary-ink p-6 text-center shadow-pixel sm:flex-row sm:text-left">
+            <PixelBall palette={BALL_PALETTES.mythic} size={72} label="Mythic Black Ball" />
+            <blockquote className="font-pixel text-[10px] leading-relaxed text-primary-foreground">
+              "It does not imprison. It summons."
+              <span className="mt-2 block text-secondary">— Inscription found in the Ruins of Minecara</span>
+            </blockquote>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {[
               ["Class", "Mythic Ball — Tier 0"],
@@ -216,8 +425,11 @@ function Wiki() {
               </div>
             ))}
           </div>
-          <blockquote className="mt-6 border-l-4 border-primary pl-4 text-primary-ink/80">
-            Even with the Mythic Black, the odds stay at 0.001%. That is not a balancing bug — it is a design decision. The Ancestral is not captured by skill. It is captured by destiny.
+          <blockquote className="mt-6 flex items-start gap-4 border-l-4 border-primary pl-4 text-primary-ink/80">
+            <PixelBall palette={BALL_PALETTES.mythic} size={40} label="Mythic Black Ball" className="mt-1" />
+            <span>
+              Even with the Mythic Black, the odds stay at 0.001%. That is not a balancing bug — it is a design decision. The Ancestral is not captured by skill. It is captured by destiny.
+            </span>
           </blockquote>
           <p className="mt-4 text-primary-ink/70">
             Carrying an Ancestral is not a status — it is a role in the world. You stop being just a participant and become a generator of consequences.
@@ -229,7 +441,8 @@ function Wiki() {
           <p className="mb-4 text-primary-ink/70">
             Rivers across the world can be corrupted or stagnant — dark, with no spawns, no life. Purifying a river grants a massive amount of EXP and restores the environment: spawns return, the water clears and the region produces resources again.
           </p>
-          <p className="mb-6 border-4 border-primary bg-primary/10 p-4 font-pixel text-[10px] leading-relaxed text-primary">
+          <p className="mb-6 flex items-center gap-3 border-4 border-primary bg-primary/10 p-4 font-pixel text-[10px] leading-relaxed text-primary">
+            <PixelBall palette={BALL_PALETTES.crystal} size={24} label="Crystal Ball" />
             ONLY ANCESTRAL CREATURES CAN PURIFY RIVERS.
           </p>
           <p className="text-primary-ink/70">
@@ -244,7 +457,10 @@ function Wiki() {
           </p>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="border-4 border-primary-ink bg-background p-5 shadow-pixel">
-              <p className="mb-4 font-pixel text-[10px] text-secondary">BLESSINGS</p>
+              <p className="mb-4 flex items-center gap-2 font-pixel text-[10px] text-secondary">
+                <PixelBall palette={BALL_PALETTES.master} size={20} label="Master Ball" />
+                BLESSINGS
+              </p>
               <ul className="space-y-3">
                 {goodEvents.map(([name, desc]) => (
                   <li key={name}>
@@ -255,7 +471,10 @@ function Wiki() {
               </ul>
             </div>
             <div className="border-4 border-primary-ink bg-primary-ink p-5 shadow-pixel">
-              <p className="mb-4 font-pixel text-[10px] text-primary">CATASTROPHES</p>
+              <p className="mb-4 flex items-center gap-2 font-pixel text-[10px] text-primary">
+                <PixelBall palette={BALL_PALETTES.mythic} size={20} label="Mythic Black Ball" />
+                CATASTROPHES
+              </p>
               <ul className="space-y-3">
                 {darkEvents.map(([name, desc]) => (
                   <li key={name}>
@@ -275,7 +494,10 @@ function Wiki() {
           <SectionTitle index="07">SUMMARY TABLE</SectionTitle>
           <PixelTable head={["System", "Requirement", "Reward", "Rarity"]} rows={summaryRows} />
           <div className="mt-6 border-4 border-primary-ink bg-primary-ink p-6 shadow-pixel">
-            <p className="mb-3 font-pixel text-[10px] text-secondary">THE IDEAL PATH</p>
+            <p className="mb-3 flex items-center gap-2 font-pixel text-[10px] text-secondary">
+              <PixelBall palette={BALL_PALETTES.poke} size={18} label="Poké Ball" />
+              THE IDEAL PATH
+            </p>
             <p className="font-pixel text-[9px] leading-loose text-primary-foreground">
               MINE → PURE CRYSTAL → CRYSTAL BALL → BETTER CAPTURES → ANCESTRAL CRYSTAL → MYTHIC BLACK → ANCESTRAL (0.001%) → PURIFY RIVERS → EXP + EVENTS → BECOME THE WORLD'S EPICENTER
             </p>
@@ -295,7 +517,10 @@ function Wiki() {
       </main>
 
       <footer className="border-t-4 border-primary-ink py-8 text-center">
-        <p className="font-pixel text-[10px] text-primary-ink/50">IDLEMON REVO — A JOURNEY BUILT IN PIXELS.</p>
+        <p className="flex items-center justify-center gap-2 font-pixel text-[10px] text-primary-ink/50">
+          <PixelBall palette={BALL_PALETTES.poke} size={16} label="IDLEMON REVO" />
+          IDLEMON REVO — A JOURNEY BUILT IN PIXELS.
+        </p>
       </footer>
     </div>
   );
