@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AncestralEncyclopedia } from "@/components/AncestralEncyclopedia";
 
 export const Route = createFileRoute("/wiki")({
   head: () => ({
@@ -55,7 +56,7 @@ const BALL_PIXELS = [
   ".....oooooo.....",
 ];
 
-const BALL_PALETTES: Record<string, BallPalette> = {
+const BALL_PALETTES = {
   poke: { top: "#E14B3B", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#2A1A18", shine: "#F58A72" },
   great: { top: "#3C6BE0", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#18203A", shine: "#7FA0F5" },
   ultra: { top: "#F2B733", bottom: "#4A3F78", button: "#FFE9A8", ink: "#241C38", shine: "#FFD873" },
@@ -82,7 +83,7 @@ const BALL_PALETTES: Record<string, BallPalette> = {
       [14, 10, "#FFC94D"],
     ],
   },
-};
+} satisfies Record<string, BallPalette>;
 
 function PixelBall({
   palette,
@@ -434,6 +435,9 @@ function Wiki() {
           <p className="mt-4 text-primary-ink/70">
             Carrying an Ancestral is not a status — it is a role in the world. You stop being just a participant and become a generator of consequences.
           </p>
+          <div className="mt-8">
+            <AncestralEncyclopedia />
+          </div>
         </section>
 
         <section id="rivers" className="mb-16 scroll-mt-24">
