@@ -55,7 +55,7 @@ const BALL_PIXELS = [
   ".....oooooo.....",
 ];
 
-const BALL_PALETTES: Record<string, BallPalette> = {
+const BALL_PALETTES = {
   poke: { top: "#E14B3B", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#2A1A18", shine: "#F58A72" },
   great: { top: "#3C6BE0", bottom: "#F6F1E4", button: "#FFFFFF", ink: "#18203A", shine: "#7FA0F5" },
   ultra: { top: "#F2B733", bottom: "#4A3F78", button: "#FFE9A8", ink: "#241C38", shine: "#FFD873" },
@@ -82,7 +82,7 @@ const BALL_PALETTES: Record<string, BallPalette> = {
       [14, 10, "#FFC94D"],
     ],
   },
-};
+} satisfies Record<string, BallPalette>;
 
 function PixelBall({
   palette,
