@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AncestralEncyclopedia } from "@/components/AncestralEncyclopedia";
 
 export const Route = createFileRoute("/wiki")({
   head: () => ({
@@ -434,6 +435,9 @@ function Wiki() {
           <p className="mt-4 text-primary-ink/70">
             Carrying an Ancestral is not a status — it is a role in the world. You stop being just a participant and become a generator of consequences.
           </p>
+          <div className="mt-8">
+            <AncestralEncyclopedia />
+          </div>
         </section>
 
         <section id="rivers" className="mb-16 scroll-mt-24">
