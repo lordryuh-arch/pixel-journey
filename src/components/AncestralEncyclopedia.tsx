@@ -118,7 +118,7 @@ function BonusIcon({ kind }: { kind: string }) {
   const color: Record<string, string> = { crystal: "#63CFE0", xp: "#A96BFF", trainer: "#E14B3B", gold: "#FFC94D" };
   return (
     <svg viewBox="0 0 5 5" width={18} height={18} shapeRendering="crispEdges" aria-hidden>
-      {map[kind].flatMap((r, y) =>
+      {(map[kind] ?? []).flatMap((r, y) =>
         r.split("").map((ch, x) =>
           ch === "." ? null : (
             <rect key={`${x}${y}`} x={x} y={y} width={1} height={1} fill={ch === "o" ? "#0B0812" : ch === "C" ? "#FFFFFF" : color[kind]} />
