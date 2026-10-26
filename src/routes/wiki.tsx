@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AncestralEncyclopedia } from "@/components/AncestralEncyclopedia";
 
@@ -266,7 +268,7 @@ function BallTable() {
         </thead>
         <tbody>
           {ballRows.map((row) => (
-            <tr key={row.n} className="group border-b-2 border-primary-ink/10 last:border-0">
+            <tr key={row.n} className="group border-b-2 border-primary-ink/10 transition-colors hover:bg-secondary/10 last:border-0">
               <td className="px-4 py-3 align-top">
                 <div className="flex items-center gap-3">
                   <PixelBall
@@ -293,6 +295,20 @@ function BallTable() {
 }
 
 function Wiki() {
+  useEffect(() => {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const sections = Array.from(document.querySelectorAll('main > section'));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.03 });
+    sections.forEach((section) => { section.classList.add('wiki-reveal'); observer.observe(section); });
+    return () => { observer.disconnect(); sections.forEach((section) => section.classList.remove('wiki-reveal', 'is-visible')); };
+  }, []);
   return (
     <div className="min-h-screen bg-background text-primary-ink">
       <header className="sticky top-0 z-40 border-b-4 border-primary-ink bg-background/95 backdrop-blur">
@@ -301,12 +317,11 @@ function Wiki() {
             <PixelBall palette={BALL_PALETTES.poke} size={18} label="IDLEMON REVO" />
             IDLEMON REVO
           </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 border-2 border-primary-ink px-3 py-2 font-pixel text-[10px] text-primary-ink shadow-pixel-sm transition-transform hover:-translate-y-0.5 active:translate-y-0"
-          >
+          <Button asChild variant="pixelOutline" className="px-3 font-pixel text-[8px] sm:text-[10px]">
+          <Link to="/">
             <ArrowLeft className="h-3.5 w-3.5" /> BACK HOME
           </Link>
+          </Button>
         </div>
       </header>
 
@@ -323,7 +338,7 @@ function Wiki() {
               palette={row.palette}
               size={34}
               label={row.name}
-              className="transition-transform duration-200 hover:-translate-y-1"
+              className="wiki-ball-float"
             />
           ))}
         </div>
@@ -337,9 +352,9 @@ function Wiki() {
             ["Events", "#events"],
             ["Summary", "#summary"],
           ].map(([label, href]) => (
-            <a key={href} href={href} className="border-2 border-primary-ink/20 px-3 py-1.5 font-pixel text-[9px] text-primary-ink/70 transition-colors hover:border-primary hover:text-primary">
+            <Button asChild key={href} variant="ghost" className="rounded-none border-2 border-primary-ink/20 px-3 font-pixel text-[9px] text-primary-ink/70 hover:border-primary hover:text-primary"><a href={href}>
               {label}
-            </a>
+            </a></Button>
           ))}
         </nav>
 

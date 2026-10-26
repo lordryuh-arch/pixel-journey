@@ -101,7 +101,26 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
 @keyframes mythic-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
 @utility mythic-veins { animation: mythic-pulse 2.4s steps(3, end) infinite; }
 
+@keyframes wiki-bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-6px) rotate(4deg); }
+}
+
+.wiki-ball-float { animation: wiki-bob 4s ease-in-out infinite; }
+.wiki-ball-float:nth-child(2n) { animation-delay: -.9s; }
+.wiki-ball-float:nth-child(3n) { animation-delay: -1.8s; }
+.wiki-reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.wiki-reveal.is-visible { opacity: 1; transform: translateY(0); }
+.ancestral-art { transition: transform .35s ease; }
+.group:hover .ancestral-art { transform: translateY(-5px) scale(1.06); }
+.ancestral-stage {
+  background-color: var(--card);
+  background-image: linear-gradient(to right, color-mix(in oklab, var(--secondary) 15%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--secondary) 15%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .wiki-reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

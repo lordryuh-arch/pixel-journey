@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep Ancestral image mappings in a separate browser-safe module; use bundled local artwork and identify species-reference art for game-specific forms so custom variants are not misrepresented.
+- Wiki motion must progressively enhance visible content and respect reduced-motion preferences so reading never depends on animation support.
