@@ -112,6 +112,10 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
 .wiki-reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .wiki-reveal.is-visible { opacity: 1; transform: translateY(0); }
 .ancestral-art { transition: transform .35s ease; }
+.ancestral-crystal {
+  animation: wiki-bob 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px color-mix(in oklab, var(--primary-bright) 45%, transparent));
+}
 .group:hover .ancestral-art { transform: translateY(-5px) scale(1.06); }
 .ancestral-stage {
   background-color: var(--card);

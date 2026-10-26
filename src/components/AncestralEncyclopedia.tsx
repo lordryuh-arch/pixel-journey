@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Search, ArrowUpRight, Sparkles } from "lucide-react";
 import { ANCESTRALS, ANCESTRAL_BONUSES, type Ancestral, type Shape } from "@/lib/ancestrals";
 import { ANCESTRAL_ART } from "@/lib/ancestral-art";
+import { AncestralPrice } from "@/components/AncestralPrice";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -169,6 +170,8 @@ export function AncestralEncyclopedia() {
         <span className="border-2 border-secondary px-3 py-2 font-pixel text-[9px] text-secondary">17 CATALOGUED</span>
       </div>
 
+      <div className="mb-6"><AncestralPrice /></div>
+
       <div className="mb-4 flex items-center gap-2 border-2 border-primary-foreground/25 px-3 py-2">
         <Search className="h-4 w-4 text-primary-foreground/50" />
         <input
@@ -211,6 +214,7 @@ export function AncestralEncyclopedia() {
               </div>
               <RarityTag />
               </div>
+               <AncestralPrice compact />
               <ArrowUpRight className="absolute right-2 top-2 text-primary-ink opacity-50 transition-opacity group-hover:opacity-100" />
             </Button>
           ))}
@@ -232,6 +236,7 @@ export function AncestralEncyclopedia() {
               </div>
             </div>
             <DialogDescription className="mb-3 text-sm text-primary-foreground/80">{open.description}</DialogDescription>
+            <div className="mb-5"><AncestralPrice /></div>
             <p className="mb-5 text-sm"><span className="font-pixel text-[8px] text-secondary">SPECIALTY </span>{open.specialty}</p>
             <p className="mb-2 font-pixel text-[9px] text-primary">ABILITIES</p>
             <ul className="mb-5 space-y-2">
