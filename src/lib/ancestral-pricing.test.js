@@ -3,7 +3,7 @@ import {
   ANCESTRAL_RED_CRYSTAL_PRICE,
   ANCESTRAL_BUYER_COUPON_DISCOUNT,
   ANCESTRAL_COUPON_PRICE,
-} from "./ancestral-pricing";
+} from "./ancestral-pricing.ts";
 
 describe("Ancestral red crystal prices", () => {
   test("each Ancestral costs 30,000 red crystals", () => {
