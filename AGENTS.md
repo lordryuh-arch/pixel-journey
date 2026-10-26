@@ -11,3 +11,4 @@
 
 - Keep Ancestral image mappings in a separate browser-safe module; use bundled local artwork and identify species-reference art for game-specific forms so custom variants are not misrepresented.
 - Wiki motion must progressively enhance visible content and respect reduced-motion preferences so reading never depends on animation support.
+- Keep Ancestral price and coupon calculations in a browser-safe pricing module shared by all illustrative price displays, so cards and details cannot disagree.
