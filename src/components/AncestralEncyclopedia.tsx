@@ -1,6 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Search, ArrowUpRight, Sparkles } from "lucide-react";
 import { ANCESTRALS, ANCESTRAL_BONUSES, type Ancestral, type Shape } from "@/lib/ancestrals";
+import { ANCESTRAL_ART } from "@/lib/ancestral-art";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 // 12x12 sprite templates. o = outline, m = main, a = accent, e = eye
 const SHAPES: Record<Shape, string[]> = {
@@ -136,6 +139,16 @@ const RarityTag = () => (
   <span className="bg-rarity-ancestral px-1.5 py-0.5 font-pixel text-[7px] text-primary-foreground">ANCESTRAL</span>
 );
 
+function AncestralArtwork({ c, large = false }: { c: Ancestral; large?: boolean }) {
+  const art = ANCESTRAL_ART[c.id];
+  return (
+    <div className={`ancestral-stage relative flex w-full items-center justify-center overflow-hidden ${large ? "h-64 sm:h-72" : "h-32 sm:h-40"}`}>
+      {art ? <img src={art.src} alt={art.subject} width={475} height={475} loading={large ? "eager" : "lazy"} className={`ancestral-art relative h-full w-full object-contain ${large ? "p-4" : "p-3"}`} /> : <AncestralSprite c={c} size={large ? 160 : 80} />}
+      {large && art?.reference && <span className="absolute bottom-2 left-2 right-2 bg-card/95 px-2 py-1 text-center text-xs text-muted-foreground">Species reference · {art.subject}</span>}
+    </div>
+  );
+}
+
 export function AncestralEncyclopedia() {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("All");
@@ -145,18 +158,11 @@ export function AncestralEncyclopedia() {
     (c) => c.name.toLowerCase().includes(query.trim().toLowerCase()) && (type === "All" || c.types.includes(type)),
   );
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
   return (
     <div className="border-4 border-primary-ink bg-primary-ink p-5 text-primary-foreground shadow-pixel sm:p-8">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 font-pixel text-[9px] tracking-widest text-secondary">SECRET ARCHIVE</p>
+          <p className="mb-2 flex items-center gap-2 font-pixel text-[9px] text-secondary"><Sparkles className="h-4 w-4" /> SECRET ARCHIVE</p>
           <h3 className="font-pixel text-base leading-relaxed sm:text-xl">ANCESTRAL ENCYCLOPEDIA</h3>
           <p className="mt-2 text-sm text-primary-foreground/70">17 rare creatures. Unique powers. A legacy beyond time.</p>
         </div>
@@ -175,13 +181,13 @@ export function AncestralEncyclopedia() {
       </div>
       <div className="mb-6 flex flex-wrap gap-2">
         {types.map((t) => (
-          <button
+          <Button variant="ghost" aria-pressed={type === t}
             key={t}
             onClick={() => setType(t)}
-            className={`border-2 px-2 py-1 font-pixel text-[8px] transition-colors ${type === t ? "border-primary bg-primary text-primary-foreground" : "border-primary-foreground/20 text-primary-foreground/70 hover:border-secondary"}`}
+            className={`h-8 rounded-none border-2 px-2 py-1 font-pixel text-[8px] transition-colors ${type === t ? "border-primary bg-primary text-primary-foreground hover:bg-primary-bright hover:text-primary-foreground" : "border-primary-foreground/20 text-primary-foreground/70 hover:border-secondary"}`}
           >
             {t.toUpperCase()}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -192,45 +198,40 @@ export function AncestralEncyclopedia() {
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {list.map((c) => (
-            <button
+            <Button variant="ghost" aria-label={`View ${c.name}`}
               key={c.id}
               onClick={() => setOpen(c)}
-              className="group flex flex-col items-center gap-2 border-2 border-primary-foreground/15 p-3 text-center transition-all hover:-translate-y-1 hover:border-secondary active:translate-y-0"
+              className="group relative flex h-auto min-w-0 flex-col items-stretch gap-0 whitespace-normal rounded-none border-2 border-primary-foreground/20 p-0 text-center text-primary-foreground transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:bg-primary-foreground/5 hover:text-primary-foreground active:translate-y-0"
             >
-              <AncestralSprite c={c} size={56} />
-              <p className="font-pixel text-[8px] leading-relaxed">{c.name}</p>
+              <AncestralArtwork c={c} />
+              <div className="flex min-h-28 flex-col items-center gap-2 p-3">
+              <p className="flex min-h-8 items-center justify-center font-pixel text-[8px] leading-relaxed">{c.name}</p>
               <div className="flex flex-wrap justify-center gap-1">
                 {c.types.map((t) => <TypeTag key={t} t={t} />)}
               </div>
               <RarityTag />
-            </button>
+              </div>
+              <ArrowUpRight className="absolute right-2 top-2 text-primary-ink opacity-50 transition-opacity group-hover:opacity-100" />
+            </Button>
           ))}
         </div>
       )}
 
+      <Dialog open={Boolean(open)} onOpenChange={(isOpen) => { if (!isOpen) setOpen(null); }}>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-ink/80 p-4" onClick={() => setOpen(null)}>
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={open.name}
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto border-4 border-secondary bg-primary-ink p-6 text-primary-foreground shadow-pixel"
-          >
+          <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-2xl gap-0 overflow-y-auto rounded-none border-4 border-secondary bg-primary-ink p-0 text-primary-foreground shadow-pixel sm:rounded-none [&>button]:bg-primary-ink [&>button]:text-primary-foreground">
+            <AncestralArtwork c={open} large />
+            <div className="p-5 sm:p-6">
             <div className="mb-4 flex items-start gap-4">
-              <AncestralSprite c={open} size={80} />
               <div className="flex-1">
-                <h4 className="mb-2 font-pixel text-sm leading-relaxed">{open.name}</h4>
+                <DialogTitle className="mb-2 font-pixel text-sm leading-relaxed tracking-normal">{open.name}</DialogTitle>
                 <div className="flex flex-wrap gap-1">
                   <RarityTag />
                   {open.types.map((t) => <TypeTag key={t} t={t} />)}
                 </div>
               </div>
-              <button onClick={() => setOpen(null)} aria-label="Close details" className="border-2 border-primary-foreground/30 p-1 hover:border-primary">
-                <X className="h-4 w-4" />
-              </button>
             </div>
-            <p className="mb-3 text-sm text-primary-foreground/80">{open.description}</p>
+            <DialogDescription className="mb-3 text-sm text-primary-foreground/80">{open.description}</DialogDescription>
             <p className="mb-5 text-sm"><span className="font-pixel text-[8px] text-secondary">SPECIALTY </span>{open.specialty}</p>
             <p className="mb-2 font-pixel text-[9px] text-primary">ABILITIES</p>
             <ul className="mb-5 space-y-2">
@@ -255,9 +256,10 @@ export function AncestralEncyclopedia() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+            </div>
+          </DialogContent>
       )}
+      </Dialog>
     </div>
   );
 }
