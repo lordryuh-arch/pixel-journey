@@ -46,4 +46,4 @@ export function useWallet() {
   return wallet;
 }
 
-export const LAUNCH_AT = new Date("2026-10-04T23:00:00-03:00");
+export { PRE_REGISTRATION_OPENS_AT as LAUNCH_AT } from "./preregistration";
