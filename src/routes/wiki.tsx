@@ -8,17 +8,17 @@ import { AncestralEncyclopedia } from "@/components/AncestralEncyclopedia";
 export const Route = createFileRoute("/wiki")({
   head: () => ({
     meta: [
-      { title: "IDLEMON REVO Wiki | Capture, Crystals & Ancestrals" },
+      { title: "POKE EMERALD SAGA Wiki | Capture, Crystals & Ancestrals" },
       {
         name: "description",
         content:
-          "The official IDLEMON REVO wiki: ball hierarchy, crystal mining in Minecara, the Mythic Black ball, Ancestral creatures, river purification and dynamic world events.",
+          "The official POKE EMERALD SAGA wiki: ball hierarchy, crystal mining in Minecara, the Mythic Black ball, Ancestral creatures, river purification and dynamic world events.",
       },
-      { property: "og:title", content: "IDLEMON REVO Wiki | Capture, Crystals & Ancestrals" },
+      { property: "og:title", content: "POKE EMERALD SAGA Wiki | Capture, Crystals & Ancestrals" },
       {
         property: "og:description",
         content:
-          "Ball hierarchy, crystal mining, the Mythic Black and the Ancestrals — the advanced mechanics of IDLEMON REVO.",
+          "Ball hierarchy, crystal mining, the Mythic Black and the Ancestrals — the advanced mechanics of POKE EMERALD SAGA.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
@@ -313,9 +313,9 @@ function Wiki() {
     <div className="min-h-screen bg-background text-primary-ink">
       <header className="sticky top-0 z-40 border-b-4 border-primary-ink bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-          <Link to="/" className="flex items-center gap-2 font-pixel text-sm text-primary">
-            <PixelBall palette={BALL_PALETTES.poke} size={18} label="IDLEMON REVO" />
-            IDLEMON REVO
+          <Link to="/" className="flex min-w-0 max-w-52 items-center gap-2 font-pixel text-[9px] leading-loose text-primary sm:max-w-none sm:text-xs">
+            <PixelBall palette={BALL_PALETTES.poke} size={18} label="POKE EMERALD SAGA" />
+            POKE EMERALD SAGA
           </Link>
           <Button asChild variant="pixelOutline" className="px-3 font-pixel text-[8px] sm:text-[10px]">
           <Link to="/">
@@ -536,9 +536,9 @@ function Wiki() {
       </main>
 
       <footer className="border-t-4 border-primary-ink py-8 text-center">
-        <p className="flex items-center justify-center gap-2 font-pixel text-[10px] text-primary-ink/50">
-          <PixelBall palette={BALL_PALETTES.poke} size={16} label="IDLEMON REVO" />
-          IDLEMON REVO — A JOURNEY BUILT IN PIXELS.
+        <p className="flex flex-wrap items-center justify-center gap-2 px-4 font-pixel text-[9px] leading-loose text-primary-ink/50">
+          <PixelBall palette={BALL_PALETTES.poke} size={16} label="POKE EMERALD SAGA" />
+          POKE EMERALD SAGA — A JOURNEY BUILT IN PIXELS.
         </p>
       </footer>
     </div>
