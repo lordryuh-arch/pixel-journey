@@ -1,9 +1,12 @@
-import { Check, Copy, Loader2 } from "lucide-react";
+import { Check, Copy, Loader2, LockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LAUNCH_AT, readWallet, saveWallet, type Wallet } from "@/lib/wallet";
+import { readWallet, saveWallet, type Wallet } from "@/lib/wallet";
+import { isPreRegistrationOpen, registrationCountdown } from "@/lib/preregistration";
+import registrationArt from "@/assets/saga/pre-registration.webp";
+import { FloatingEgg, LoadingBall } from "@/components/SagaAtmosphere";
 
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -22,19 +25,19 @@ function randomChunk(size: number) {
 const makeCode = () => `IDLM-${randomChunk(4)}-${randomChunk(4)}`;
 
 function useCountdown() {
-  const [left, setLeft] = useState<number | null>(null);
+  const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
-    setLeft(LAUNCH_AT.getTime() - Date.now());
-    const id = setInterval(() => setLeft(LAUNCH_AT.getTime() - Date.now()), 1000);
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
-  const total = Math.max(0, Math.floor((left ?? 0) / 1000));
+  const remaining = now === null ? null : registrationCountdown(now);
   return {
-    live: left !== null && left <= 0,
+    live: now !== null && isPreRegistrationOpen(now),
     parts: [
-      ["HRS", Math.floor(total / 3600)],
-      ["MIN", Math.floor((total % 3600) / 60)],
-      ["SEC", total % 60],
+      ["HRS", remaining?.hours],
+      ["MIN", remaining?.minutes],
+      ["SEC", remaining?.seconds],
     ] as const,
   };
 }
@@ -52,6 +55,7 @@ export function WalletSection() {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    if (!isPreRegistrationOpen(Date.now())) return;
     setError("");
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Enter a valid email address.");
 
@@ -74,35 +78,40 @@ export function WalletSection() {
   function copyAll() {
     if (!wallet) return;
     void navigator.clipboard.writeText(
-      `IDLEMON REVO\nTrainer: ${wallet.player} (${wallet.rank})\nWallet: ${wallet.wallet_id}\n${wallet.codes.join("\n")}`,
+      `POKE EMERALD SAGA\nTrainer: ${wallet.player} (${wallet.rank})\nWallet: ${wallet.wallet_id}\n${wallet.codes.join("\n")}`,
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
   return (
-    <section id="wallet" className="border-y-4 border-primary-ink bg-accent/30 px-5 py-24 sm:py-32">
+    <section id="wallet" className="saga-registration scroll-mt-24 border-y-4 border-primary-ink px-5 py-16 sm:py-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2">
+      <img src={registrationArt} alt="POKE EMERALD SAGA pre-registration on November 7, with a trainer and emerald treasure chest" width={1254} height={1254} loading="lazy" className="mx-auto w-full max-w-lg rounded-lg border-2 border-primary-ink shadow-pixel" />
+      <div>
       <div className="mx-auto max-w-3xl text-center">
-        <p className="font-pixel text-[10px] uppercase text-primary sm:text-xs">TRAINER WALLET</p>
+        <p className="font-pixel text-[10px] uppercase text-primary sm:text-xs">PRE-REGISTRATION · NOVEMBER 07</p>
         <h2 className="mt-4 font-pixel text-xl leading-relaxed text-primary-ink sm:text-3xl">
-          CLAIM YOUR 5 REWARD CODES
+          {countdown.live ? "YOUR SAGA BEGINS" : "THE WAIT IS ALMOST OVER"}
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Pre-registration closes October 4 at 11:00 PM. Enter your Gmail, unlock your five codes
-          and write them down.
+          {countdown.live ? "Pre-registration is open. Your five reward codes await." : "Opens November 7 at 5:00 PM Brasília time (UTC−3)."}
         </p>
 
-        <div className="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-2">
+        <div className="mx-auto mt-5 w-36"><FloatingEgg /></div>
+        <p className="font-pixel text-[9px] leading-relaxed text-muted-foreground">A LITTLE MYSTERY AWAITS</p>
+        <div className="mt-6 flex justify-center"><LoadingBall open={countdown.live} /></div>
+        <div role="timer" aria-label="Time until pre-registration opens" className="mx-auto mt-6 grid max-w-sm grid-cols-3 gap-3">
           {countdown.parts.map(([label, value]) => (
             <div key={label} className="border-2 border-primary-ink bg-card py-3 shadow-pixel-sm">
-              <p className="font-pixel text-sm text-primary">{String(value).padStart(2, "0")}</p>
+              <p className="font-pixel text-lg text-primary sm:text-2xl">{value === undefined ? "--" : String(value).padStart(2, "0")}</p>
               <p className="mt-2 font-pixel text-[8px] text-muted-foreground">{label}</p>
             </div>
           ))}
         </div>
-        {countdown.live && (
-          <p className="mt-4 font-pixel text-[10px] text-primary">PRE-REGISTRATION CLOSED</p>
-        )}
+        <p role="status" className="mt-5 font-pixel text-[10px] leading-relaxed text-primary">{countdown.live ? "PRE-REGISTRATION OPEN" : "PRE-REGISTRATION OPENS SOON"}</p>
+      </div>
+      </div>
       </div>
 
       <div className="mx-auto mt-12 max-w-xl border-4 border-primary-ink bg-card p-6 shadow-pixel sm:p-8">
@@ -135,6 +144,8 @@ export function WalletSection() {
               Write these down — this wallet can only be created once on this device.
             </p>
           </div>
+        ) : !countdown.live ? (
+          <div className="text-center"><LockKeyhole className="mx-auto size-6 text-primary" /><p className="mt-4 font-pixel text-[10px] leading-loose text-primary-ink">YOUR ADVENTURE IS GETTING READY</p><p className="mt-3 text-muted-foreground">November 7, 2026 · 5:00 PM Brasília</p><Button variant="pixel" disabled className="mt-5"><LockKeyhole /> OPENS AT 5:00 PM</Button></div>
         ) : (
           <form onSubmit={handleSubmit} className="grid gap-5">
             <label className="grid gap-2">
@@ -157,11 +168,11 @@ export function WalletSection() {
                 {RANKS.map((option) => {
                   const active = rank === option.id;
                   return (
-                    <button
+                    <Button variant="ghost"
                       key={option.id}
                       type="button"
                       onClick={() => setRank(option.id)}
-                      className={`border-2 border-primary-ink px-3 py-4 text-left transition-transform ${
+                      className={`h-auto flex-col items-start whitespace-normal rounded-none border-2 border-primary-ink px-3 py-4 text-left transition-transform ${
                         active
                           ? "bg-primary text-primary-foreground shadow-pixel-sm -translate-y-0.5"
                           : "bg-background text-primary-ink hover:-translate-y-0.5"
@@ -173,14 +184,14 @@ export function WalletSection() {
                       >
                         {option.line}
                       </span>
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
             </fieldset>
 
             {error && <p className="text-sm font-semibold text-primary">{error}</p>}
-            <Button type="submit" variant="pixel" size="lg" disabled={loading || countdown.live}>
+            <Button type="submit" variant="pixel" size="lg" disabled={loading || !countdown.live}>
               {loading ? <Loader2 className="animate-spin" /> : null}
               {loading ? "CREATING..." : "UNLOCK MY CODES"}
             </Button>
