@@ -2,24 +2,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-import heroImage from "@/assets/idlemon-emerald-banner.png";
+import heroImage from "@/assets/saga/winter-top.webp";
 import forestMap from "@/assets/idlemon-map-bone.png";
 import iceMap from "@/assets/idlemon-map-ice.png";
-import marketplace from "@/assets/idlemon-marketplace-banner.png";
+import marketplace from "@/assets/saga/emerald-world.webp";
 import gym from "@/assets/idlemon-gym.jpg";
-import esmeralda from "@/assets/idlemon-esmeralda.jpg";
+import esmeralda from "@/assets/saga/emerald-world.webp";
 import { Button } from "@/components/ui/button";
 import { WalletSection } from "@/components/WalletSection";
+import { Snowfall } from "@/components/SagaAtmosphere";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "IDLEMON REVO | Your Journey Begins Here" },
+      { title: "POKE EMERALD SAGA | Your Journey Begins Here" },
       {
         name: "description",
-        content: "Explore maps, discover rare creatures, and begin your pixel-art journey in IDLEMON REVO.",
+        content: "Explore maps, discover rare creatures, and begin your pixel-art journey in POKE EMERALD SAGA.",
       },
-      { property: "og:title", content: "IDLEMON REVO | Your Journey Begins Here" },
+      { property: "og:title", content: "POKE EMERALD SAGA | Your Journey Begins Here" },
       {
         property: "og:description",
         content: "A classic handheld RPG world brought back to life on the modern web.",
@@ -38,7 +39,7 @@ const navItems = [
   ["Economy", "#economy"],
   ["Gyms", "#gyms"],
   ["Marketplace", "#marketplace"],
-  ["Wallet", "#wallet"],
+  ["Pre-register", "#wallet"],
   ["Wiki", "/wiki"],
 ] as const;
 
@@ -93,46 +94,46 @@ function Index() {
     <main className="overflow-hidden bg-background">
       <header className="fixed inset-x-0 top-0 z-50 border-b-2 border-primary-ink bg-background/95 backdrop-blur-sm">
         <div className="mx-auto grid h-18 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6">
-          <a href="#home" className="min-w-0 font-pixel text-sm text-primary sm:text-base">IDLEMON <span className="text-primary-ink">REVO</span></a>
-          <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
+          <a href="#home" className="min-w-0 max-w-60 font-pixel text-[10px] leading-loose text-primary sm:text-xs">POKE <span className="text-primary-ink">EMERALD SAGA</span></a>
+          <nav className="hidden items-center gap-4 xl:flex" aria-label="Primary navigation">
             {navItems.map(([label, href]) => <a key={href} href={href} className="text-sm font-semibold text-foreground transition-colors hover:text-primary">{label}</a>)}
             <div className="flex items-center gap-2">
-              <CommunityLink href={DISCORD_URL} label="Join the IDLEMON REVO Discord" kind="discord" />
-              <CommunityLink href={WHATSAPP_URL} label="Join the IDLEMON REVO WhatsApp group" kind="whatsapp" />
+              <CommunityLink href={DISCORD_URL} label="Join the POKE EMERALD SAGA Discord" kind="discord" />
+              <CommunityLink href={WHATSAPP_URL} label="Join the POKE EMERALD SAGA WhatsApp group" kind="whatsapp" />
             </div>
-            <Button asChild variant="pixel" size="lg"><a href="#play">PLAY NOW</a></Button>
+            <Button asChild variant="pixel" size="lg"><a href="#wallet">PRE-REGISTER</a></Button>
           </nav>
-          <button type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} className="grid size-10 place-items-center border-2 border-primary-ink text-primary-ink lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <Button variant="pixelOutline" size="icon" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="size-10 xl:hidden" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
         </div>
         {menuOpen && (
-          <nav className="border-t-2 border-primary-ink bg-background px-5 py-5 lg:hidden" aria-label="Mobile navigation">
+          <nav className="border-t-2 border-primary-ink bg-background px-5 py-5 xl:hidden" aria-label="Mobile navigation">
             <div className="grid gap-1">
               {navItems.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)} className="border-b border-border py-3 font-semibold">{label}</a>)}
               <div className="flex items-center gap-3 border-b border-border py-3">
-                <CommunityLink href={DISCORD_URL} label="Join the IDLEMON REVO Discord" kind="discord" />
-                <CommunityLink href={WHATSAPP_URL} label="Join the IDLEMON REVO WhatsApp group" kind="whatsapp" />
+                <CommunityLink href={DISCORD_URL} label="Join the POKE EMERALD SAGA Discord" kind="discord" />
+                <CommunityLink href={WHATSAPP_URL} label="Join the POKE EMERALD SAGA WhatsApp group" kind="whatsapp" />
                 <span className="text-sm text-muted-foreground">Talk with other trainers</span>
               </div>
-              <Button asChild variant="pixel" className="mt-4"><a href="#play" onClick={() => setMenuOpen(false)}>PLAY NOW</a></Button>
+              <Button asChild variant="pixel" className="mt-4"><a href="#wallet" onClick={() => setMenuOpen(false)}>PRE-REGISTER</a></Button>
             </div>
           </nav>
         )}
       </header>
 
       <section id="home" className="relative pt-18">
-        <div className="relative overflow-hidden bg-primary-ink">
-          <div className="hero-pan relative aspect-[3/2] w-full overflow-hidden bg-primary-ink">
-            <img src={heroImage} alt="IDLEMON REVO Emerald heroes flying across a world of floating islands" width={1536} height={1024} className="hero-banner h-full w-full object-contain" />
-          </div>
-          <span className="pixel-float absolute right-[12%] top-[18%] size-2 bg-secondary" /><span className="pixel-float absolute right-[18%] top-[28%] size-1.5 bg-primary" style={{ animationDelay: "1s" }} />
+        <div className="relative overflow-hidden bg-saga-winter">
+          <img src={heroImage} alt="POKE EMERALD SAGA winter adventure with trainers, snowy mountains and a Poké Ball snowman" width={1672} height={941} fetchPriority="high" className="block aspect-[1672/941] w-full object-contain" />
+          <Snowfall />
         </div>
-        <div className="border-y-4 border-primary-ink bg-background px-5 py-12 sm:py-16">
-          <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto]">
-            <div><p className="font-pixel text-[10px] text-primary sm:text-xs">A NEW WORLD AWAITS</p><h1 className="mt-4 font-pixel text-3xl leading-snug text-primary-ink sm:text-5xl">IDLEMON REVO</h1><p className="mt-3 font-pixel text-sm leading-relaxed text-primary sm:text-xl">Your journey begins here.</p><p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Explore maps, discover Pokémon of different rarities, manage your energy and build your own journey in a world inspired by the golden age of handheld RPGs.</p></div>
-            <div className="flex flex-col items-start gap-4 sm:flex-row lg:flex-col"><Button asChild variant="pixel" size="lg"><a href="#play">PLAY NOW <ChevronRight /></a></Button><Button asChild variant="pixelOutline" size="lg"><a href="#maps">EXPLORE THE WORLD</a></Button></div>
+        <div className="border-y-4 border-primary-ink bg-background px-5 py-8 sm:py-10">
+          <div className="mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div><p className="font-pixel text-[9px] text-primary">A NEW CHAPTER · NOVEMBER 07</p><h1 className="mt-3 font-pixel text-xl leading-relaxed text-primary-ink sm:text-3xl">POKE EMERALD SAGA</h1><p className="mt-3 text-lg font-semibold text-foreground">Your journey begins here.</p><p className="mt-2 max-w-2xl text-base leading-7 text-muted-foreground">Explore maps, discover Pokémon, and begin a new adventure inspired by the golden age of handheld RPGs.</p></div>
+            <div className="flex flex-wrap items-start gap-4 lg:flex-col"><Button asChild variant="pixel" size="lg"><a href="#wallet">PRE-REGISTER <ChevronRight /></a></Button><Button asChild variant="pixelOutline" size="lg"><a href="#maps">EXPLORE THE WORLD</a></Button></div>
           </div>
         </div>
       </section>
+
+      <WalletSection />
 
       <section id="game" className="pixel-grid px-5 py-24 sm:py-32">
         <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.85fr_1.15fr]">
@@ -156,24 +157,21 @@ function Index() {
       </section>
 
       <section id="economy" className="border-y-2 border-primary-ink bg-accent/35 px-5 py-24 sm:py-32">
-        <SectionHeading eyebrow="COLLECT & TRADE" title="THE ECONOMY OF YOUR JOURNEY"><p>These in-game tokens are connected to the IDLEMON REVO economy and its marketplace.</p></SectionHeading>
+        <SectionHeading eyebrow="COLLECT & TRADE" title="THE ECONOMY OF YOUR JOURNEY"><p>These in-game tokens are connected to the POKE EMERALD SAGA economy and its marketplace.</p></SectionHeading>
         <div className="mx-auto mt-14 grid max-w-4xl grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4">
           {[['GOLD','gold','text-secondary'],['CRYSTAL','crystal','text-rarity-rare'],['EMERALDS','emerald','text-rarity-uncommon'],['RUBY','ruby','text-primary']].map(([name,kind,color]) => <div key={name} className="text-center"><div className="mx-auto grid size-28 place-items-center border-2 border-primary-ink bg-card shadow-pixel-sm transition-transform hover:-translate-y-2"><PixelIcon kind={kind as 'gold' | 'crystal' | 'emerald' | 'ruby'} className={`size-16 ${color}`} /></div><p className="mt-5 font-pixel text-[10px] text-primary-ink">{name}</p></div>)}
         </div>
       </section>
 
-      <section id="marketplace" className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><div className="order-2 lg:order-1"><div className="mb-5 flex items-center gap-3 text-primary"><PixelIcon kind="market" className="size-12" /><span className="font-pixel text-[10px]">THE TRADING POST</span></div><h2 className="font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">THE IDLEMON MARKETPLACE</h2><p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">Trade and explore the evolving economy of the IDLEMON REVO universe.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#marketplace">EXPLORE MARKETPLACE <ChevronRight /></a></Button></div><img src={marketplace} alt="IDLEMON REVO Emerald marketplace with trainers, creatures, items and crystals" loading="lazy" width={1536} height={1024} className="pixel-corners order-1 aspect-[3/2] w-full border-4 border-primary-ink object-cover shadow-pixel lg:order-2" /></div></section>
+      <section id="marketplace" className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><div className="order-2 lg:order-1"><div className="mb-5 flex items-center gap-3 text-primary"><PixelIcon kind="market" className="size-12" /><span className="font-pixel text-[10px]">THE TRADING POST</span></div><h2 className="font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">THE EMERALD MARKETPLACE</h2><p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">Trade and explore the evolving economy of the POKE EMERALD SAGA universe.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#marketplace">EXPLORE MARKETPLACE <ChevronRight /></a></Button></div><img src={marketplace} alt="POKE EMERALD SAGA with Rayquaza above emerald islands and waterfalls" loading="lazy" width={1671} height={941} className="pixel-corners order-1 aspect-[16/9] w-full border-4 border-primary-ink object-cover shadow-pixel lg:order-2" /></div></section>
 
-      <section id="gyms" className="bg-primary-ink px-5 py-24 text-primary-foreground sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><img src={gym} alt="Classic red-roofed IDLEMON gym" loading="lazy" width={1024} height={1024} className="pixel-corners mx-auto aspect-square w-full max-w-lg border-4 border-primary-foreground object-cover shadow-[8px_8px_0_var(--color-primary)]" /><div><div className="mb-5 flex items-center gap-3 text-secondary"><PixelIcon kind="gym" className="size-12" /><span className="font-pixel text-[10px]">NEXT CHALLENGE</span></div><h2 className="font-pixel text-2xl leading-relaxed sm:text-4xl">GYMS ARE WAITING</h2><p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/75">Prepare your team and face the challenges waiting throughout your journey.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#gyms">DISCOVER THE GYMS <ChevronRight /></a></Button></div></div></section>
+      <section id="gyms" className="bg-primary-ink px-5 py-24 text-primary-foreground sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2"><img src={gym} alt="Classic red-roofed Pokémon gym" loading="lazy" width={1024} height={1024} className="pixel-corners mx-auto aspect-square w-full max-w-lg border-4 border-primary-foreground object-cover shadow-[8px_8px_0_var(--color-primary)]" /><div><div className="mb-5 flex items-center gap-3 text-secondary"><PixelIcon kind="gym" className="size-12" /><span className="font-pixel text-[10px]">NEXT CHALLENGE</span></div><h2 className="font-pixel text-2xl leading-relaxed sm:text-4xl">GYMS ARE WAITING</h2><p className="mt-5 max-w-xl text-lg leading-8 text-primary-foreground/75">Prepare your team and face the challenges waiting throughout your journey.</p><Button asChild variant="pixel" size="lg" className="mt-8"><a href="#gyms">DISCOVER THE GYMS <ChevronRight /></a></Button></div></div></section>
 
-      <section className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2"><div><p className="font-pixel text-[10px] text-primary">A LOVE LETTER TO ADVENTURE</p><h2 className="mt-4 font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">MADE FOR THOSE WHO MISS THE CLASSICS</h2><p className="mt-6 whitespace-pre-line text-xl leading-9 text-muted-foreground">{"Pixel art. Exploration. Collection. Discovery.\nA simple journey inspired by the games that shaped a generation."}</p></div><img src={esmeralda} alt="IDLEMON REVO Emerald artwork: a trainer with a dragon companion beside a glowing emerald egg" loading="lazy" width={1280} height={647} className="pixel-corners mx-auto w-full max-w-xl border-4 border-primary-ink shadow-pixel" /></div></section>
+      <section className="px-5 py-24 sm:py-32"><div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2"><div><p className="font-pixel text-[10px] text-primary">A LOVE LETTER TO ADVENTURE</p><h2 className="mt-4 font-pixel text-2xl leading-relaxed text-primary-ink sm:text-4xl">MADE FOR THOSE WHO MISS THE CLASSICS</h2><p className="mt-6 whitespace-pre-line text-xl leading-9 text-muted-foreground">{"Pixel art. Exploration. Collection. Discovery.\nA simple journey inspired by the games that shaped a generation."}</p></div><img src={esmeralda} alt="POKE EMERALD SAGA emblem with Rayquaza and an emerald island world" loading="lazy" width={1671} height={941} className="pixel-corners mx-auto w-full max-w-xl border-4 border-primary-ink shadow-pixel" /></div></section>
 
-      <WalletSection />
+      <section id="play" className="relative border-y-4 border-primary-ink bg-primary px-5 py-24 text-center text-primary-foreground sm:py-32"><div className="pixel-grid absolute inset-0 opacity-15" /><div className="relative mx-auto max-w-4xl"><PixelIcon kind="egg" className="mx-auto size-16 text-secondary" /><h2 className="mt-7 font-pixel text-2xl leading-relaxed sm:text-5xl">YOUR NEXT CHAPTER AWAITS.</h2><p className="mt-5 text-xl font-semibold">Explore. Discover. Collect. Evolve.</p><Button asChild variant="pixelOutline" size="lg" className="mt-9"><a href="#wallet">PRE-REGISTER <ChevronRight /></a></Button><p className="mt-12 font-pixel text-[10px] uppercase text-primary-foreground/85">Or travel with the community</p><div className="mt-5 flex flex-col items-center justify-center gap-4 sm:flex-row"><Button asChild variant="pixelOutline" size="lg"><a href={DISCORD_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="discord" className="size-6 text-primary" /> JOIN DISCORD</a></Button><Button asChild variant="pixelOutline" size="lg"><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="whatsapp" className="size-6 text-primary" /> WHATSAPP GROUP</a></Button></div></div></section>
 
-
-      <section id="play" className="relative border-y-4 border-primary-ink bg-primary px-5 py-24 text-center text-primary-foreground sm:py-32"><div className="pixel-grid absolute inset-0 opacity-15" /><div className="relative mx-auto max-w-4xl"><PixelIcon kind="egg" className="mx-auto size-16 text-secondary" /><h2 className="mt-7 font-pixel text-2xl leading-relaxed sm:text-5xl">YOUR JOURNEY STARTS NOW.</h2><p className="mt-5 text-xl font-semibold">Explore. Discover. Collect. Evolve.</p><Button asChild variant="pixelOutline" size="lg" className="mt-9"><a href="#home">PLAY IDLEMON REVO <ChevronRight /></a></Button><p className="mt-12 font-pixel text-[10px] uppercase text-primary-foreground/85">Or travel with the community</p><div className="mt-5 flex flex-col items-center justify-center gap-4 sm:flex-row"><Button asChild variant="pixelOutline" size="lg"><a href={DISCORD_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="discord" className="size-6 text-primary" /> JOIN DISCORD</a></Button><Button asChild variant="pixelOutline" size="lg"><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><PixelIcon kind="whatsapp" className="size-6 text-primary" /> WHATSAPP GROUP</a></Button></div></div></section>
-
-      <footer className="bg-primary-ink px-5 py-12 text-primary-foreground"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-center"><div><p className="font-pixel text-sm">IDLEMON <span className="text-secondary">REVO</span></p><p className="mt-3 text-sm text-primary-foreground/60">A journey built in pixels.</p></div><nav className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold" aria-label="Footer navigation">{[['The Game','#game'],['Maps','#maps'],['Rarities','#rarities'],['Marketplace','#marketplace'],['Gyms','#gyms']].map(([label,href])=><a key={href} href={href} className="transition-colors hover:text-secondary">{label}</a>)}<a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="discord" className="size-5 text-secondary" /> Discord</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="whatsapp" className="size-5 text-secondary" /> WhatsApp</a></nav></div></footer>
+      <footer className="bg-primary-ink px-5 py-12 text-primary-foreground"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-center"><div><p className="font-pixel text-sm">POKE <span className="text-secondary">EMERALD SAGA</span></p><p className="mt-3 text-sm text-primary-foreground/60">A journey built in pixels.</p></div><nav className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold" aria-label="Footer navigation">{[['The Game','#game'],['Maps','#maps'],['Rarities','#rarities'],['Marketplace','#marketplace'],['Gyms','#gyms']].map(([label,href])=><a key={href} href={href} className="transition-colors hover:text-secondary">{label}</a>)}<a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="discord" className="size-5 text-secondary" /> Discord</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-secondary"><PixelIcon kind="whatsapp" className="size-5 text-secondary" /> WhatsApp</a></nav></div></footer>
     </main>
   );
 }

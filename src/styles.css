@@ -30,6 +30,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-saga-winter: var(--saga-winter);
+  --color-saga-mist: var(--saga-mist);
   --color-rarity-common: var(--rarity-common);
   --color-rarity-uncommon: var(--rarity-uncommon);
   --color-rarity-rare: var(--rarity-rare);
@@ -43,7 +45,9 @@
 }
 
 :root {
-  --background: oklch(0.982 0.012 83);
+  --saga-winter: oklch(0.42 0.12 247);
+  --saga-mist: oklch(0.965 0.018 156);
+  --background: oklch(0.985 0.004 150);
   --foreground: oklch(0.235 0.035 34);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.235 0.035 34);
@@ -128,3 +132,19 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+.saga-registration { background: var(--saga-mist); }
+.saga-snow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.saga-snow span { position: absolute; top: -12px; width: 5px; height: 5px; background: var(--card); opacity: .8; animation: saga-snowfall 12s linear infinite; }
+.saga-snow span:nth-child(3n) { width: 3px; height: 3px; opacity: .5; }
+.saga-snow span:nth-child(4n) { border-radius: 50%; }
+@keyframes saga-snowfall { from { transform: translate3d(0, -20px, 0); } to { transform: translate3d(55px, 900px, 0); } }
+.saga-egg { animation: saga-egg-float 4s ease-in-out infinite; }
+@keyframes saga-egg-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
+.saga-ball-loader { width: 72px; height: 72px; position: relative; padding: 9px; }
+.saga-ball-loader::before { content: ""; position: absolute; inset: 0; border: 3px solid var(--border); border-top-color: var(--primary); border-right-color: var(--secondary); border-radius: 50%; animation: saga-charge 2s linear infinite; }
+.saga-loading-ball { width: 100%; height: 100%; animation: saga-rock 2.5s ease-in-out infinite; }
+@keyframes saga-charge { to { transform: rotate(360deg); } }
+@keyframes saga-rock { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+.saga-ball-loader.is-open::before { border-color: var(--rarity-uncommon); animation: none; }
+.saga-ball-loader.is-open .saga-loading-ball { animation: none; }
+@media (prefers-reduced-motion: reduce) { .saga-snow { display: none; } .saga-egg, .saga-loading-ball, .saga-ball-loader::before { animation: none; } }
