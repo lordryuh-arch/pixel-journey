@@ -13,4 +13,4 @@
 - Wiki motion must progressively enhance visible content and respect reduced-motion preferences so reading never depends on animation support.
 - Keep Ancestral price and coupon calculations in a browser-safe pricing module shared by all illustrative price displays, so cards and details cannot disagree.
 - Keep pre-registration opening rules in a browser-safe timing module, with boundary tests; the countdown unlocks the existing form without changing its persistence.
-- Render the reward GIF directly and mount viewport-wide decorative snow once in the root layout; snow never intercepts interaction, and reduced motion slows snow and disables additional egg transforms.
+- Copy supplied animated GIFs byte-for-byte (never re-encode, which broke frame disposal) and render them directly; draw snow on one canvas mounted viewport-wide decorative snow once in the root layout; snow never intercepts interaction, and reduced motion slows snow and disables additional egg transforms.
