@@ -17,4 +17,4 @@
 # Magical egg and site snow
 - [x] Keep the supplied magical egg GIF playing without a static-image substitution.
 - [x] Show falling square snow across the site without blocking controls.
-- [ ] Verify GIF playback and snow on desktop, mobile and reduced-motion settings.
+- [x] Verify GIF playback and snow on desktop, mobile and reduced-motion settings.
