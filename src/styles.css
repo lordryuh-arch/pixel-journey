@@ -133,7 +133,7 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 .saga-registration { background: var(--saga-mist); }
-.saga-snow { position: fixed; inset: 0; width: 100vw; height: 100dvh; z-index: 40; pointer-events: none; filter: drop-shadow(0 0 1px color-mix(in oklab, var(--saga-winter) 40%, transparent)); }
+.saga-snow { position: fixed; inset: 0; width: 100vw; height: 100dvh; z-index: 40; pointer-events: none; filter: drop-shadow(0 0 1.5px color-mix(in oklab, var(--saga-winter) 75%, transparent)); }
 .saga-egg { animation: saga-egg-float 4s ease-in-out infinite; }
 @keyframes saga-egg-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
 .saga-ball-loader { width: 72px; height: 72px; position: relative; padding: 9px; }
