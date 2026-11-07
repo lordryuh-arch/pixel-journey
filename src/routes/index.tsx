@@ -86,6 +86,31 @@ function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: 
   );
 }
 
+type TokenKind = "gold" | "crystal" | "emerald" | "ruby";
+
+const ECONOMY_TOKENS: { name: string; kind: TokenKind; color: string }[] = [
+  { name: "GOLD", kind: "gold", color: "var(--secondary)" },
+  { name: "CRYSTAL", kind: "crystal", color: "var(--rarity-rare)" },
+  { name: "EMERALDS", kind: "emerald", color: "var(--rarity-uncommon)" },
+  { name: "RUBY", kind: "ruby", color: "var(--primary)" },
+];
+
+function TokenCard({ name, kind, color, index }: { name: string; kind: TokenKind; color: string; index: number }) {
+  const style = { "--token": color, "--delay": `${-0.9 * index}s` } as React.CSSProperties;
+  return (
+    <div className="token-card text-center" style={style}>
+      <div className="token-stage mx-auto">
+        <span className="token-spark" style={{ top: "20%", left: "22%" }} />
+        <span className="token-spark" style={{ top: "64%", left: "74%", animationDelay: "-1.1s" }} />
+        <span className="token-spark" style={{ top: "34%", left: "68%", animationDelay: "-2.2s" }} />
+        <PixelIcon kind={kind} className="token-icon size-16" />
+      </div>
+      <p className="mt-5 font-pixel text-[10px] text-primary-ink">{name}</p>
+      <span className="token-rule mx-auto" aria-hidden="true" />
+    </div>
+  );
+}
+
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
 
