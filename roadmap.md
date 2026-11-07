@@ -13,3 +13,8 @@
 - [x] Add winter snow and floating purple egg with reduced-motion support.
 - [x] Gate existing pre-registration until November 7, 2026 at 17h Brasília with a Poké Ball countdown.
 - [x] Verify opening boundary and desktop/mobile presentation.
+
+# Magical egg and site snow
+- [x] Keep the supplied magical egg GIF playing without a static-image substitution.
+- [x] Show falling square snow across the site without blocking controls.
+- [x] Verify GIF playback and snow on desktop, mobile and reduced-motion settings.
