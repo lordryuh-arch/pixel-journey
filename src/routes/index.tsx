@@ -10,7 +10,6 @@ import gym from "@/assets/idlemon-gym.jpg";
 import esmeralda from "@/assets/saga/emerald-world.webp";
 import { Button } from "@/components/ui/button";
 import { WalletSection } from "@/components/WalletSection";
-import { Snowfall } from "@/components/SagaAtmosphere";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -123,7 +122,6 @@ function Index() {
       <section id="home" className="relative pt-18">
         <div className="relative overflow-hidden bg-saga-winter">
           <img src={heroImage} alt="POKE EMERALD SAGA winter adventure with trainers, snowy mountains and a Poké Ball snowman" width={1672} height={941} fetchPriority="high" className="block aspect-[1672/941] w-full object-contain" />
-          <Snowfall />
         </div>
         <div className="border-y-4 border-primary-ink bg-background px-5 py-8 sm:py-10">
           <div className="mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">

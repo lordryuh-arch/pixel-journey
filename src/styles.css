@@ -133,11 +133,11 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 .saga-registration { background: var(--saga-mist); }
-.saga-snow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.saga-snow span { position: absolute; top: -12px; width: 5px; height: 5px; background: var(--card); opacity: .8; animation: saga-snowfall 12s linear infinite; }
-.saga-snow span:nth-child(3n) { width: 3px; height: 3px; opacity: .5; }
-.saga-snow span:nth-child(4n) { border-radius: 50%; }
-@keyframes saga-snowfall { from { transform: translate3d(0, -20px, 0); } to { transform: translate3d(55px, 900px, 0); } }
+.saga-snow { position: fixed; inset: 0; z-index: 40; overflow: hidden; pointer-events: none; }
+.saga-snow span { position: absolute; top: -16px; width: 8px; height: 8px; background: var(--card); opacity: .8; box-shadow: 1px 1px 0 color-mix(in oklab, var(--saga-winter) 45%, transparent); animation: saga-snowfall var(--snow-duration, 16s) linear infinite; }
+.saga-snow span:nth-child(3n) { width: 4px; height: 4px; opacity: .55; }
+.saga-snow span:nth-child(4n) { width: 11px; height: 11px; opacity: .7; }
+@keyframes saga-snowfall { from { transform: translate3d(0, -20px, 0); } to { transform: translate3d(55px, calc(100dvh + 40px), 0); } }
 .saga-egg { animation: saga-egg-float 4s ease-in-out infinite; }
 @keyframes saga-egg-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
 .saga-ball-loader { width: 72px; height: 72px; position: relative; padding: 9px; }
@@ -147,4 +147,7 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
 @keyframes saga-rock { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
 .saga-ball-loader.is-open::before { border-color: var(--rarity-uncommon); animation: none; }
 .saga-ball-loader.is-open .saga-loading-ball { animation: none; }
-@media (prefers-reduced-motion: reduce) { .saga-snow { display: none; } .saga-egg, .saga-loading-ball, .saga-ball-loader::before { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .saga-snow span { animation-duration: 36s !important; animation-iteration-count: infinite !important; }
+  .saga-egg, .saga-loading-ball, .saga-ball-loader::before { animation: none; }
+}

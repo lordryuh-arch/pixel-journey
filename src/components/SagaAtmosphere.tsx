@@ -1,12 +1,11 @@
 import egg from "@/assets/saga/purple-egg.gif";
-import stillEgg from "@/assets/saga/purple-egg-still.webp";
 
 export function Snowfall() {
-  return <div className="saga-snow" aria-hidden="true">{Array.from({ length: 28 }, (_, i) => <span key={i} style={{ left: `${(i * 37) % 100}%`, animationDelay: `${-(i % 9)}s`, animationDuration: `${9 + i % 7}s` }} />)}</div>;
+  return <div className="saga-snow" aria-hidden="true">{Array.from({ length: 36 }, (_, i) => <span key={i} style={{ left: `${(i * 37) % 100}%`, animationDelay: `${-(i * 7 % 19)}s`, "--snow-duration": `${12 + i % 9}s` } as React.CSSProperties} />)}</div>;
 }
 
 export function FloatingEgg() {
-  return <picture className="saga-egg block"><source media="(prefers-reduced-motion: reduce)" srcSet={stillEgg} /><img src={egg} alt="Floating purple crystal egg" width={362} height={362} className="mx-auto w-full" loading="lazy" /></picture>;
+  return <div className="saga-egg block"><img src={egg} alt="Floating purple crystal egg" width={362} height={362} className="mx-auto w-full" loading="lazy" /></div>;
 }
 
 export function LoadingBall({ open }: { open: boolean }) {
