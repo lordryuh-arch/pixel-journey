@@ -10,6 +10,7 @@ import gym from "@/assets/idlemon-gym.jpg";
 import esmeralda from "@/assets/saga/emerald-world.webp";
 import { Button } from "@/components/ui/button";
 import { WalletSection } from "@/components/WalletSection";
+import { ItemVault } from "@/components/ItemVault";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,14 +89,38 @@ function SectionHeading({ eyebrow, title, children }: { eyebrow: string; title: 
 
 type TokenKind = "gold" | "crystal" | "emerald" | "ruby";
 
-const ECONOMY_TOKENS: { name: string; kind: TokenKind; color: string }[] = [
-  { name: "GOLD", kind: "gold", color: "var(--secondary)" },
-  { name: "CRYSTAL", kind: "crystal", color: "var(--rarity-rare)" },
-  { name: "EMERALDS", kind: "emerald", color: "var(--rarity-uncommon)" },
-  { name: "RUBY", kind: "ruby", color: "var(--primary)" },
+const ECONOMY_TOKENS: { name: string; kind: TokenKind; color: string; tag: string; desc: string }[] = [
+  {
+    name: "GOLD",
+    kind: "gold",
+    color: "var(--secondary)",
+    tag: "BASE COIN",
+    desc: "The everyday coin — earned across every map and spent in shops and trades.",
+  },
+  {
+    name: "CRYSTAL",
+    kind: "crystal",
+    color: "var(--rarity-rare)",
+    tag: "ELEMENTAL",
+    desc: "Elemental shards dropped by specific Pokémon, each one carrying its own rarity.",
+  },
+  {
+    name: "EMERALDS",
+    kind: "emerald",
+    color: "var(--rarity-uncommon)",
+    tag: "MARKETPLACE",
+    desc: "The marketplace gem behind the rarest trades of the POKE EMERALD SAGA universe.",
+  },
+  {
+    name: "RUBY",
+    kind: "ruby",
+    color: "var(--primary)",
+    tag: "RAREST",
+    desc: "The scarcest token in the world — saved for the most valuable treasures.",
+  },
 ];
 
-function TokenCard({ name, kind, color, index }: { name: string; kind: TokenKind; color: string; index: number }) {
+function TokenCard({ name, kind, color, tag, desc, index }: { name: string; kind: TokenKind; color: string; tag: string; desc: string; index: number }) {
   const style = { "--token": color, "--delay": `${-0.9 * index}s` } as React.CSSProperties;
   return (
     <div className="token-card text-center" style={style}>
@@ -107,6 +132,8 @@ function TokenCard({ name, kind, color, index }: { name: string; kind: TokenKind
       </div>
       <p className="mt-5 font-pixel text-[10px] text-primary-ink">{name}</p>
       <span className="token-rule mx-auto" aria-hidden="true" />
+      <p className="mt-4 font-pixel text-[8px] leading-relaxed" style={{ color }}>{tag}</p>
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">{desc}</p>
     </div>
   );
 }
@@ -158,6 +185,8 @@ function Index() {
 
       <WalletSection />
 
+      <ItemVault />
+
       <section id="game" className="pixel-grid px-5 py-24 sm:py-32">
         <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="mx-auto grid size-52 place-items-center border-4 border-primary-ink bg-card shadow-pixel sm:size-64"><PixelIcon kind="energy" className="size-28 text-primary sm:size-36" /></div>
@@ -180,9 +209,9 @@ function Index() {
       </section>
 
       <section id="economy" className="border-y-2 border-primary-ink bg-accent/35 px-5 py-24 sm:py-32">
-        <SectionHeading eyebrow="COLLECT & TRADE" title="THE ECONOMY OF YOUR JOURNEY"><p>These in-game tokens are connected to the POKE EMERALD SAGA economy and its marketplace.</p></SectionHeading>
-        <div className="mx-auto mt-14 grid max-w-4xl grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4">
-          {[['GOLD','gold','text-secondary'],['CRYSTAL','crystal','text-rarity-rare'],['EMERALDS','emerald','text-rarity-uncommon'],['RUBY','ruby','text-primary']].map(([name,kind,color]) => <div key={name} className="text-center"><div className="mx-auto grid size-28 place-items-center border-2 border-primary-ink bg-card shadow-pixel-sm transition-transform hover:-translate-y-2"><PixelIcon kind={kind as 'gold' | 'crystal' | 'emerald' | 'ruby'} className={`size-16 ${color}`} /></div><p className="mt-5 font-pixel text-[10px] text-primary-ink">{name}</p></div>)}
+        <SectionHeading eyebrow="COLLECT & TRADE" title="THE ECONOMY OF YOUR JOURNEY"><p>Four in-game tokens power the POKE EMERALD SAGA economy and its marketplace.</p></SectionHeading>
+        <div className="mx-auto mt-14 grid max-w-5xl grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 md:grid-cols-4">
+          {ECONOMY_TOKENS.map((token, i) => <TokenCard key={token.name} {...token} index={i} />)}
         </div>
       </section>
 
