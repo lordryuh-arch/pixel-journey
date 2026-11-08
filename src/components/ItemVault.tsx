@@ -167,11 +167,28 @@ function Badge({ label, featured = false }: { label: string; featured?: boolean 
   );
 }
 
+/* spinning poké ball used as the category divider */
+function PokeSpinner() {
+  return (
+    <svg viewBox="0 0 64 64" className="poke-spin h-5 w-5 shrink-0 sm:h-6 sm:w-6" aria-hidden="true">
+      <circle cx="32" cy="32" r="27" fill="var(--card)" stroke="var(--primary-ink)" strokeWidth="5" />
+      <path d="M5 32a27 27 0 0 1 54 0Z" fill="var(--primary)" />
+      <path d="M5 32h54" stroke="var(--primary-ink)" strokeWidth="5" />
+      <circle cx="32" cy="32" r="9" fill="var(--card)" stroke="var(--primary-ink)" strokeWidth="5" />
+      <circle cx="32" cy="32" r="4" fill="var(--secondary)" />
+    </svg>
+  );
+}
+
 function CategoryTitle({ label, meta }: { label: string; meta: string }) {
   return (
-    <div className="mx-auto mb-7 flex max-w-6xl items-center gap-4">
-      <span className="bg-primary-ink px-3 py-2 font-pixel text-[10px] leading-none text-primary-foreground">{label}</span>
-      <span className="h-0.5 flex-1 bg-primary-ink/25" aria-hidden="true" />
+    <div className="mx-auto mb-8 flex max-w-6xl flex-col items-center gap-3">
+      <span className="bg-primary-ink px-4 py-2.5 font-pixel text-[10px] leading-none text-primary-foreground sm:text-[11px]">{label}</span>
+      <div className="flex w-full items-center gap-3">
+        <span className="h-0.5 flex-1 bg-primary-ink/30" aria-hidden="true" />
+        <PokeSpinner />
+        <span className="h-0.5 flex-1 bg-primary-ink/30" aria-hidden="true" />
+      </div>
       <span className="font-pixel text-[9px] text-primary-ink/45">{meta}</span>
     </div>
   );

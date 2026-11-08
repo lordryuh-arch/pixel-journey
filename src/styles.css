@@ -291,6 +291,7 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   /* the crystal carousel is the section's main motion — keep it sliding */
   .loot-track { animation: loot-scroll 32s linear infinite !important; }
   .neon-frame { animation: neon-pulse 3.2s ease-in-out infinite !important; }
+  .poke-spin { animation: poke-rotate 3.6s linear infinite !important; }
 }
 
 /* featured item sparkle */
@@ -302,4 +303,14 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
     0 0 10px var(--secondary),
     0 0 24px color-mix(in oklab, var(--secondary) 55%, transparent);
   transform: rotate(45deg);
+}
+
+/* category divider poké ball */
+.poke-spin {
+  transform-origin: 50% 50%;
+  animation: poke-rotate 3.6s linear infinite;
+}
+
+@keyframes poke-rotate {
+  to { transform: rotate(360deg); }
 }
