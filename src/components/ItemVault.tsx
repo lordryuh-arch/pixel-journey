@@ -30,7 +30,7 @@ type LootItem = {
   featured?: boolean;
 };
 
-const LOOT: LootItem[] = [
+const MODES: LootItem[] = [
   {
     src: bossGif,
     name: "RAID BOSSES",
@@ -56,14 +56,9 @@ const LOOT: LootItem[] = [
     alt: "Guild treasure chest",
     neon: "var(--rarity-uncommon)",
   },
-  {
-    src: skateGif,
-    name: "SKATE",
-    badge: "SKIN · MOUNT",
-    desc: "A special event mount — a limited skin to ride across the maps.",
-    alt: "Skate mount skin from a special event",
-    neon: "var(--rarity-rare)",
-  },
+];
+
+const REWARDS: LootItem[] = [
   {
     src: kitTreinador,
     name: "TRAINER KIT",
@@ -79,6 +74,14 @@ const LOOT: LootItem[] = [
     desc: "Special quests with exclusive rewards, refreshed across the journey.",
     alt: "Quest book with a Poké Ball emblem",
     neon: "var(--rarity-epic)",
+  },
+  {
+    src: skateGif,
+    name: "SKATE",
+    badge: "SKIN · MOUNT",
+    desc: "A special event mount — a limited skin to ride across the maps.",
+    alt: "Skate mount skin from a special event",
+    neon: "var(--rarity-rare)",
   },
   {
     src: boxGif,
@@ -164,10 +167,20 @@ function Badge({ label, featured = false }: { label: string; featured?: boolean 
   );
 }
 
+function CategoryTitle({ label, meta }: { label: string; meta: string }) {
+  return (
+    <div className="mx-auto mb-7 flex max-w-6xl items-center gap-4">
+      <span className="bg-primary-ink px-3 py-2 font-pixel text-[10px] leading-none text-primary-foreground">{label}</span>
+      <span className="h-0.5 flex-1 bg-primary-ink/25" aria-hidden="true" />
+      <span className="font-pixel text-[9px] text-primary-ink/45">{meta}</span>
+    </div>
+  );
+}
+
 function LootCard({ src, name, badge, desc, alt, neon, featured = false }: LootItem) {
   return (
     <article
-      className="neon-frame group relative flex flex-col border-4 bg-card transition-transform duration-200 hover:-translate-y-1"
+      className="neon-frame group relative flex h-full flex-col border-4 bg-card transition-transform duration-200 hover:-translate-y-1"
       style={{ "--neon": neon } as React.CSSProperties}
     >
       <div className="relative">
@@ -224,10 +237,24 @@ export function ItemVault() {
           Crystals are elementals that drop from specific Pokémon — each drop carries its own rarity.
         </p>
 
-        <div className="mx-auto mt-12 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {LOOT.map((item) => (
-            <LootCard key={item.name} {...item} />
-          ))}
+        <div className="mt-14">
+          <CategoryTitle label="GAME MODES" meta="3 MODES" />
+          <div className="grid gap-6 sm:grid-cols-3">
+            {MODES.map((item) => (
+              <LootCard key={item.name} {...item} />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-16">
+          <CategoryTitle label="ITEMS & REWARDS" meta="5 ITEMS" />
+          <div className="flex flex-wrap justify-center gap-6">
+            {REWARDS.map((item) => (
+              <div key={item.name} className="w-full sm:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)]">
+                <LootCard {...item} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
