@@ -15,7 +15,7 @@ export function Snowfall() {
     let width = 0, height = 0, flakes: Flake[] = [], frame = 0, last = performance.now(), wind = 0, windTarget = 0.3;
 
     // Emerald dust instead of white snow: three soft glowing tones so it reads as magical, not flat.
-    const TONES = [
+    const TONES: [string, string, string][] = [
       ["rgba(16,185,129,1)", "rgba(16,185,129,0.8)", "rgba(16,185,129,0)"],
       ["rgba(110,231,183,1)", "rgba(110,231,183,0.75)", "rgba(110,231,183,0)"],
       ["rgba(190,242,100,1)", "rgba(190,242,100,0.7)", "rgba(190,242,100,0)"],
@@ -76,7 +76,8 @@ export function Snowfall() {
         else if (f.x < -10) f.x = width + 10;
         const size = f.r * 2.6;
         ctx.globalAlpha = f.alpha;
-        ctx.drawImage(sprites[f.tone], f.x - size / 2, f.y - size / 2, size, size);
+        const sprite = sprites[f.tone] ?? sprites[0];
+        if (sprite) ctx.drawImage(sprite, f.x - size / 2, f.y - size / 2, size, size);
       }
       ctx.globalAlpha = 1;
       frame = requestAnimationFrame(tick);
