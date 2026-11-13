@@ -23,3 +23,7 @@
 - [x] Add the November 14, 2026 at 10:00 PM Brasília opening to the timing module with boundary tests.
 - [x] Show a days/hours/minutes/seconds launch counter next to the pre-registration countdown.
 - [x] Verify the counter ticks and fits desktop and mobile.
+
+# Emerald snow effect
+- [x] Recolor the falling snow from white to emerald, mint and lime tones.
+- [x] Verify the effect reads on light and dark sections without blocking controls.

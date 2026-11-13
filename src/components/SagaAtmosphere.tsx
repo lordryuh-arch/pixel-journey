@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import egg from "@/assets/saga/purple-egg.gif";
 
-type Flake = { x: number; y: number; r: number; speed: number; sway: number; phase: number; alpha: number };
+type Flake = { x: number; y: number; r: number; speed: number; sway: number; phase: number; alpha: number; tone: number };
 
 /** Realistic, soft snowfall drawn on a single fixed canvas. Purely decorative: never intercepts clicks. */
 export function Snowfall() {
@@ -14,19 +14,29 @@ export function Snowfall() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let width = 0, height = 0, flakes: Flake[] = [], frame = 0, last = performance.now(), wind = 0, windTarget = 0.3;
 
-    const sprite = document.createElement("canvas");
-    sprite.width = sprite.height = 64;
-    const sctx = sprite.getContext("2d")!;
-    const g = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    g.addColorStop(0, "rgba(255,255,255,1)");
-    g.addColorStop(0.35, "rgba(255,255,255,0.85)");
-    g.addColorStop(1, "rgba(255,255,255,0)");
-    sctx.fillStyle = g;
-    sctx.fillRect(0, 0, 64, 64);
+    // Emerald dust instead of white snow: three soft glowing tones so it reads as magical, not flat.
+    const TONES = [
+      ["rgba(16,185,129,1)", "rgba(16,185,129,0.8)", "rgba(16,185,129,0)"],
+      ["rgba(110,231,183,1)", "rgba(110,231,183,0.75)", "rgba(110,231,183,0)"],
+      ["rgba(190,242,100,1)", "rgba(190,242,100,0.7)", "rgba(190,242,100,0)"],
+    ];
+    const sprites = TONES.map(([core, mid, edge]) => {
+      const sprite = document.createElement("canvas");
+      sprite.width = sprite.height = 64;
+      const sctx = sprite.getContext("2d")!;
+      const g = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, core);
+      g.addColorStop(0.35, mid);
+      g.addColorStop(1, edge);
+      sctx.fillStyle = g;
+      sctx.fillRect(0, 0, 64, 64);
+      return sprite;
+    });
 
     const makeFlake = (top = false): Flake => {
       const depth = Math.random();
       const r = 0.8 + depth * depth * 4.2;
+      const roll = Math.random();
       return {
         x: Math.random() * width,
         y: top ? -10 - Math.random() * 40 : Math.random() * height,
@@ -35,6 +45,7 @@ export function Snowfall() {
         sway: 8 + Math.random() * 22,
         phase: Math.random() * Math.PI * 2,
         alpha: 0.45 + depth * 0.5,
+        tone: roll < 0.55 ? 0 : roll < 0.85 ? 1 : 2,
       };
     };
 
@@ -65,7 +76,7 @@ export function Snowfall() {
         else if (f.x < -10) f.x = width + 10;
         const size = f.r * 2.6;
         ctx.globalAlpha = f.alpha;
-        ctx.drawImage(sprite, f.x - size / 2, f.y - size / 2, size, size);
+        ctx.drawImage(sprites[f.tone], f.x - size / 2, f.y - size / 2, size, size);
       }
       ctx.globalAlpha = 1;
       frame = requestAnimationFrame(tick);
