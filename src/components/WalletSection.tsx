@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { readWallet, saveWallet, type Wallet } from "@/lib/wallet";
-import { isPreRegistrationOpen, registrationCountdown } from "@/lib/preregistration";
+import { gameCountdown, isGameOpen, isPreRegistrationOpen, registrationCountdown } from "@/lib/preregistration";
 import registrationArt from "@/assets/saga/pre-registration.webp";
 import { FloatingEgg, LoadingBall } from "@/components/SagaAtmosphere";
 
@@ -32,12 +32,20 @@ function useCountdown() {
     return () => clearInterval(id);
   }, []);
   const remaining = now === null ? null : registrationCountdown(now);
+  const launch = now === null ? null : gameCountdown(now);
   return {
     live: now !== null && isPreRegistrationOpen(now),
+    gameLive: now !== null && isGameOpen(now),
     parts: [
       ["HRS", remaining?.hours],
       ["MIN", remaining?.minutes],
       ["SEC", remaining?.seconds],
+    ] as const,
+    gameParts: [
+      ["DAYS", launch?.days],
+      ["HRS", launch?.hours],
+      ["MIN", launch?.minutes],
+      ["SEC", launch?.seconds],
     ] as const,
   };
 }
@@ -110,6 +118,21 @@ export function WalletSection() {
           ))}
         </div>
         <p role="status" className="mt-5 font-pixel text-[10px] leading-relaxed text-primary">{countdown.live ? "PRE-REGISTRATION OPEN" : "PRE-REGISTRATION OPENS SOON"}</p>
+
+        <div className="saga-launch mx-auto mt-8 max-w-md border-2 border-primary-ink bg-card p-4 shadow-pixel-sm">
+          <p className="font-pixel text-[9px] uppercase leading-relaxed text-primary">THE GAME OPENS · NOVEMBER 14 · 10:00 PM</p>
+          <div role="timer" aria-label="Time until the game opens" className="mt-4 grid grid-cols-4 gap-2">
+            {countdown.gameParts.map(([label, value]) => (
+              <div key={label} className="border-2 border-primary-ink bg-background py-3">
+                <p className="font-pixel text-sm text-primary sm:text-lg">{value === undefined ? "--" : String(value).padStart(2, "0")}</p>
+                <p className="mt-2 font-pixel text-[7px] text-muted-foreground">{label}</p>
+              </div>
+            ))}
+          </div>
+          <p role="status" className="mt-3 font-pixel text-[9px] leading-relaxed text-muted-foreground">
+            {countdown.gameLive ? "SERVERS ARE LIVE — WELCOME TO THE SAGA" : "SERVERS COMING ONLINE · BRASÍLIA TIME (UTC−3)"}
+          </p>
+        </div>
       </div>
       </div>
       </div>

@@ -143,6 +143,14 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
 @keyframes saga-rock { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
 .saga-ball-loader.is-open::before { border-color: var(--rarity-uncommon); animation: none; }
 .saga-ball-loader.is-open .saga-loading-ball { animation: none; }
+.saga-launch { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 30%, transparent), 0 0 22px color-mix(in oklab, var(--primary) 28%, transparent); animation: saga-launch-glow 3.2s ease-in-out infinite; }
+@keyframes saga-launch-glow {
+  0%, 100% { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 22%, transparent), 0 0 12px color-mix(in oklab, var(--primary) 18%, transparent); }
+  50% { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 42%, transparent), 0 0 28px color-mix(in oklab, var(--primary) 38%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saga-launch { animation: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .saga-egg, .saga-loading-ball, .saga-ball-loader::before { animation: none; }
   .token-stage, .token-icon, .token-spark, .token-stage::after { animation: none; }
