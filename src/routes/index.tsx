@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-import heroImage from "@/assets/saga/winter-top.webp";
 import forestMap from "@/assets/idlemon-map-bone.png";
 import iceMap from "@/assets/idlemon-map-ice.png";
 import marketplace from "@/assets/saga/emerald-world.webp";
@@ -10,6 +9,8 @@ import gym from "@/assets/idlemon-gym.jpg";
 import esmeralda from "@/assets/saga/emerald-world.webp";
 import { Button } from "@/components/ui/button";
 import { WalletSection } from "@/components/WalletSection";
+import { HeroMedia } from "@/components/HeroMedia";
+import { SlimeEvent } from "@/components/SlimeEvent";
 import { ItemVault } from "@/components/ItemVault";
 
 export const Route = createFileRoute("/")({
@@ -36,6 +37,7 @@ const navItems = [
   ["Home", "#home"],
   ["The Game", "#game"],
   ["Rarities", "#rarities"],
+  ["Event", "#event"],
   ["Economy", "#economy"],
   ["Gyms", "#gyms"],
   ["Marketplace", "#marketplace"],
@@ -172,9 +174,7 @@ function Index() {
       </header>
 
       <section id="home" className="relative pt-18">
-        <div className="relative overflow-hidden bg-saga-winter">
-          <img src={heroImage} alt="POKE EMERALD SAGA winter adventure with trainers, snowy mountains and a Poké Ball snowman" width={1672} height={941} fetchPriority="high" className="block aspect-[1672/941] w-full object-contain" />
-        </div>
+        <HeroMedia />
         <div className="border-y-4 border-primary-ink bg-background px-5 py-8 sm:py-10">
           <div className="mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
             <div><p className="font-pixel text-[9px] text-primary">A NEW CHAPTER · NOVEMBER 07</p><h1 className="mt-3 font-pixel text-xl leading-relaxed text-primary-ink sm:text-3xl">POKE EMERALD SAGA</h1><p className="mt-3 text-lg font-semibold text-foreground">Your journey begins here.</p><p className="mt-2 max-w-2xl text-base leading-7 text-muted-foreground">Explore maps, discover Pokémon, and begin a new adventure inspired by the golden age of handheld RPGs.</p></div>
@@ -184,6 +184,8 @@ function Index() {
       </section>
 
       <WalletSection />
+
+      <SlimeEvent />
 
       <ItemVault />
 
