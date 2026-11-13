@@ -148,8 +148,33 @@ body { margin: 0; background: var(--color-background); color: var(--color-foregr
   0%, 100% { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 22%, transparent), 0 0 12px color-mix(in oklab, var(--primary) 18%, transparent); }
   50% { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 42%, transparent), 0 0 28px color-mix(in oklab, var(--primary) 38%, transparent); }
 }
+/* ===== banner "day 14 coming soon" badge (shows while the banner is still) ===== */
+.saga-banner-badge {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 10px 22px 12px;
+  pointer-events: none;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  transition: opacity .45s ease, transform .45s ease;
+  background: color-mix(in oklab, var(--background) 92%, transparent);
+  border: 3px solid color-mix(in oklab, var(--rarity-uncommon) 85%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--background) 75%, transparent), 0 0 28px color-mix(in oklab, var(--rarity-uncommon) 45%, transparent);
+}
+.saga-banner-badge.is-shown { opacity: 1; transform: translate(-50%, 0); }
+.saga-banner-badge .saga-badge-day { font-size: clamp(1.5rem, 5.2vw, 2.9rem); line-height: 1; font-weight: 700; letter-spacing: .06em; color: var(--foreground); text-shadow: 0 0 12px color-mix(in oklab, var(--rarity-uncommon) 55%, transparent); }
+.saga-banner-badge .saga-badge-soon { font-size: clamp(.68rem, 2vw, .95rem); font-weight: 700; letter-spacing: .26em; color: color-mix(in oklab, var(--rarity-uncommon) 85%, var(--foreground)); text-shadow: 0 0 10px color-mix(in oklab, var(--rarity-uncommon) 60%, transparent); animation: saga-badge-blink 1.4s steps(2, end) infinite; }
+@keyframes saga-badge-blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) {
   .saga-launch { animation: none; }
+  .saga-banner-badge { transition: none; }
+  .saga-banner-badge .saga-badge-soon { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .saga-egg, .saga-loading-ball, .saga-ball-loader::before { animation: none; }
